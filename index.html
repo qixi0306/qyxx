@@ -1,0 +1,660 @@
+```html
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=yes">
+    <title>💌 字卡 · 聊天室 💌</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', 'Noto Sans TC', 'PingFang SC', 'Microsoft YaHei', system-ui, -apple-system, sans-serif;
+        }
+
+        body {
+            background: #efe4e9;
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 12px;
+        }
+
+        /* 聊天室主容器 — 模拟手机卡片 */
+        .chat-app {
+            max-width: 480px;
+            width: 100%;
+            height: 780px;
+            max-height: 95vh;
+            background: #fcf5f9;
+            border-radius: 42px 42px 32px 32px;
+            box-shadow: 0 20px 50px rgba(140, 80, 110, 0.25), 0 0 0 1px rgba(255, 220, 235, 0.5);
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+            position: relative;
+            backdrop-filter: blur(2px);
+        }
+
+        /* 顶部 — 爱人信息 */
+        .chat-header {
+            padding: 18px 22px 12px;
+            background: rgba(255, 240, 248, 0.7);
+            backdrop-filter: blur(6px);
+            border-bottom: 1px solid #f5d6e2;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            flex-shrink: 0;
+        }
+
+        .chat-header .avatar {
+            width: 48px;
+            height: 48px;
+            background: linear-gradient(135deg, #f9c8dd, #e8a6c2);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.8rem;
+            color: #4f2e40;
+            box-shadow: 0 4px 8px rgba(180, 100, 140, 0.15);
+            border: 2px solid #ffeef4;
+        }
+
+        .chat-header .info {
+            flex: 1;
+        }
+
+        .chat-header .info .name {
+            font-size: 1.25rem;
+            font-weight: 500;
+            color: #3f2536;
+            letter-spacing: 1px;
+        }
+
+        .chat-header .info .status {
+            font-size: 0.75rem;
+            color: #a05a7a;
+            background: rgba(210, 160, 180, 0.2);
+            padding: 0 12px;
+            border-radius: 30px;
+            display: inline-block;
+            margin-top: 2px;
+            border: 1px solid rgba(255, 200, 215, 0.3);
+        }
+
+        .chat-header .action-icon {
+            font-size: 1.6rem;
+            color: #a05a7a;
+            opacity: 0.7;
+            cursor: default;
+        }
+
+        /* 消息区域 — 滚动 */
+        .chat-messages {
+            flex: 1;
+            overflow-y: auto;
+            padding: 16px 16px 8px;
+            display: flex;
+            flex-direction: column;
+            gap: 14px;
+            background: rgba(250, 240, 245, 0.3);
+            scroll-behavior: smooth;
+        }
+
+        .chat-messages::-webkit-scrollbar {
+            width: 4px;
+        }
+
+        .chat-messages::-webkit-scrollbar-track {
+            background: transparent;
+        }
+
+        .chat-messages::-webkit-scrollbar-thumb {
+            background: #dbb6cc;
+            border-radius: 20px;
+        }
+
+        /* 消息气泡 — 左右结构 */
+        .message {
+            display: flex;
+            align-items: flex-end;
+            gap: 8px;
+            max-width: 88%;
+            animation: fadeIn 0.25s ease;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0.4; transform: translateY(6px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .message.self {
+            align-self: flex-end;
+            flex-direction: row-reverse;
+        }
+
+        .message.other {
+            align-self: flex-start;
+        }
+
+        .message .bubble {
+            padding: 12px 16px;
+            border-radius: 22px 22px 8px 22px;
+            background: white;
+            box-shadow: 0 2px 8px rgba(140, 80, 110, 0.08);
+            border: 1px solid rgba(255, 220, 235, 0.3);
+            max-width: 100%;
+            word-break: break-word;
+            line-height: 1.5;
+            transition: box-shadow 0.15s;
+        }
+
+        .message.self .bubble {
+            background: #f0d7e4;
+            border-radius: 22px 22px 22px 8px;
+            border-color: #ecc4d6;
+            color: #2d1d26;
+        }
+
+        .message .bubble .card-word {
+            font-size: 1.2rem;
+            font-weight: 500;
+            color: #3f2536;
+            letter-spacing: 1px;
+        }
+
+        .message .bubble .card-meaning {
+            font-size: 0.85rem;
+            color: #6e4a5f;
+            margin-top: 4px;
+            background: rgba(255, 240, 245, 0.4);
+            padding: 2px 10px 2px 8px;
+            border-radius: 30px;
+            display: inline-block;
+            border: 1px solid rgba(255, 200, 215, 0.2);
+        }
+
+        .message .bubble .card-tag {
+            font-size: 0.65rem;
+            color: #9a6b80;
+            margin-top: 6px;
+            letter-spacing: 0.5px;
+            background: rgba(235, 190, 210, 0.15);
+            padding: 0 10px;
+            border-radius: 30px;
+            display: inline-block;
+        }
+
+        .message .bubble .timestamp {
+            font-size: 0.6rem;
+            color: #b08599;
+            margin-top: 6px;
+            text-align: right;
+            opacity: 0.7;
+            letter-spacing: 0.3px;
+        }
+
+        .message .avatar-small {
+            width: 30px;
+            height: 30px;
+            border-radius: 50%;
+            background: #f0d7e4;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.9rem;
+            flex-shrink: 0;
+            border: 1px solid #ffeef4;
+            color: #4f2e40;
+        }
+
+        .message.self .avatar-small {
+            background: #dbb6cc;
+        }
+
+        /* 底部输入区 — 无AI，纯手动 */
+        .chat-input-area {
+            padding: 12px 16px 18px;
+            background: rgba(255, 240, 248, 0.6);
+            backdrop-filter: blur(6px);
+            border-top: 1px solid #f5d6e2;
+            display: flex;
+            gap: 10px;
+            align-items: center;
+            flex-shrink: 0;
+        }
+
+        .chat-input-area input {
+            flex: 1;
+            padding: 12px 18px;
+            border-radius: 40px;
+            border: 1px solid #f0c8da;
+            background: rgba(255, 255, 255, 0.7);
+            backdrop-filter: blur(2px);
+            font-size: 0.95rem;
+            outline: none;
+            transition: 0.2s;
+            color: #2d1d26;
+        }
+
+        .chat-input-area input:focus {
+            border-color: #d696b5;
+            background: #fff9fc;
+            box-shadow: 0 0 0 3px rgba(210, 140, 175, 0.15);
+        }
+
+        .chat-input-area input::placeholder {
+            color: #b2829b;
+            font-weight: 300;
+            letter-spacing: 0.5px;
+        }
+
+        .chat-input-area .btn-send {
+            background: #eccadc;
+            border: none;
+            border-radius: 40px;
+            padding: 12px 22px;
+            font-size: 1rem;
+            color: #412b3b;
+            font-weight: 400;
+            box-shadow: 0 4px 12px rgba(190, 120, 155, 0.15);
+            cursor: pointer;
+            transition: 0.2s;
+            display: flex;
+            align-items: center;
+            gap: 4px;
+            border: 1px solid #f0c8da;
+            white-space: nowrap;
+        }
+
+        .chat-input-area .btn-send:hover {
+            background: #e6b8d0;
+            transform: scale(1.02);
+            border-color: #d696b5;
+        }
+
+        .chat-input-area .btn-send:active {
+            transform: scale(0.94);
+        }
+
+        .chat-input-area .btn-send .icon {
+            font-size: 1.2rem;
+        }
+
+        /* 无AI标记 & footer */
+        .chat-footer {
+            padding: 6px 16px 12px;
+            text-align: center;
+            font-size: 0.6rem;
+            color: #b2829b;
+            letter-spacing: 1px;
+            border-top: 1px solid rgba(220, 160, 185, 0.1);
+            background: rgba(255, 240, 248, 0.2);
+            display: flex;
+            justify-content: center;
+            gap: 12px;
+            flex-shrink: 0;
+        }
+
+        .chat-footer span {
+            background: rgba(255, 215, 225, 0.15);
+            padding: 0 10px;
+            border-radius: 30px;
+        }
+
+        /* 空状态 */
+        .empty-chat {
+            text-align: center;
+            padding: 40px 10px;
+            color: #a05a7a;
+            font-size: 0.95rem;
+            opacity: 0.7;
+            letter-spacing: 1px;
+        }
+
+        /* 响应式 */
+        @media (max-width: 480px) {
+            .chat-app {
+                border-radius: 28px;
+                height: 90vh;
+                max-height: 90vh;
+            }
+            .chat-header {
+                padding: 14px 16px 10px;
+            }
+            .chat-messages {
+                padding: 12px 10px 6px;
+                gap: 12px;
+            }
+            .message {
+                max-width: 92%;
+            }
+            .chat-input-area {
+                padding: 10px 12px 14px;
+                gap: 6px;
+                flex-wrap: wrap;
+            }
+            .chat-input-area input {
+                padding: 10px 14px;
+                font-size: 0.9rem;
+                min-width: 120px;
+            }
+            .chat-input-area .btn-send {
+                padding: 10px 16px;
+                font-size: 0.9rem;
+            }
+        }
+
+        @media (max-width: 400px) {
+            .message .bubble .card-word {
+                font-size: 1.0rem;
+            }
+            .chat-header .info .name {
+                font-size: 1.0rem;
+            }
+        }
+    </style>
+</head>
+<body>
+
+<div class="chat-app" id="app">
+    <!-- 顶部 -->
+    <div class="chat-header">
+        <div class="avatar">🌸</div>
+        <div class="info">
+            <div class="name">星野 · 爱人</div>
+            <div class="status">💕 在线 · 只为你</div>
+        </div>
+        <div class="action-icon">✧</div>
+    </div>
+
+    <!-- 消息列表 -->
+    <div class="chat-messages" id="messageContainer">
+        <!-- 由 JS 动态渲染 -->
+        <div class="empty-chat">✨ 发送你们的第一张字卡吧 ✨</div>
+    </div>
+
+    <!-- 底部输入 (完全手动，无AI) -->
+    <div class="chat-input-area">
+        <input type="text" id="wordInput" placeholder="写一句关键词… (如「月白」)" maxlength="30">
+        <input type="text" id="meaningInput" placeholder="诠释 (如「温柔如月」)" maxlength="40">
+        <button class="btn-send" id="sendBtn">
+            <span class="icon">✎</span> 发送
+        </button>
+    </div>
+
+    <!-- 无AI标记 -->
+    <div class="chat-footer">
+        <span>💬 无AI · 纯手工互发</span>
+        <span>❤️ 你与星野</span>
+        <span>💫 字卡聊天</span>
+    </div>
+</div>
+
+<script>
+    (function() {
+        "use strict";
+
+        // ---------- 数据 ----------
+        // 存储所有消息
+        let messages = [];
+
+        // 当前用户身份 (固定为“我”和“星野”)
+        const MY_NAME = '我';
+        const LOVER_NAME = '星野';
+
+        // 默认初始消息 (营造互动感)
+        const DEFAULT_MESSAGES = [
+            {
+                id: Date.now() + 1,
+                sender: LOVER_NAME,
+                word: '🌸 浅樱',
+                meaning: '「春日初绽，是见到你时的心跳」',
+                tag: '🌸 约定',
+                time: new Date(Date.now() - 3600000).toLocaleTimeString('zh-CN', { hour: '2-digit', minute: '2-digit' })
+            },
+            {
+                id: Date.now() + 2,
+                sender: MY_NAME,
+                word: '🌙 月白',
+                meaning: '「如月光般温柔，只为你一人明亮」',
+                tag: '✨ 专属',
+                time: new Date(Date.now() - 1800000).toLocaleTimeString('zh-CN', { hour: '2-digit', minute: '2-digit' })
+            },
+            {
+                id: Date.now() + 3,
+                sender: LOVER_NAME,
+                word: '💫 星迹',
+                meaning: '「沿着光年的轨迹，抵达你的身边」',
+                tag: '🌠 永恒',
+                time: new Date(Date.now() - 600000).toLocaleTimeString('zh-CN', { hour: '2-digit', minute: '2-digit' })
+            }
+        ];
+
+        // 从 localStorage 加载，如果没有则用默认
+        function loadMessages() {
+            const stored = localStorage.getItem('chat_messages');
+            if (stored) {
+                try {
+                    const parsed = JSON.parse(stored);
+                    if (Array.isArray(parsed) && parsed.length > 0) {
+                        messages = parsed;
+                        return;
+                    }
+                } catch (e) {}
+            }
+            // 默认
+            messages = DEFAULT_MESSAGES.map(m => ({ ...m }));
+            saveMessages();
+        }
+
+        function saveMessages() {
+            localStorage.setItem('chat_messages', JSON.stringify(messages));
+        }
+
+        // 生成唯一ID
+        function generateId() {
+            return Date.now() + Math.floor(Math.random() * 10000);
+        }
+
+        // 获取当前时间字符串
+        function getCurrentTime() {
+            return new Date().toLocaleTimeString('zh-CN', { hour: '2-digit', minute: '2-digit' });
+        }
+
+        // ---------- 渲染消息 ----------
+        const container = document.getElementById('messageContainer');
+
+        function renderMessages() {
+            container.innerHTML = '';
+
+            if (!messages || messages.length === 0) {
+                const empty = document.createElement('div');
+                empty.className = 'empty-chat';
+                empty.textContent = '💌 还没有字卡呢，发一张给星野吧 💌';
+                container.appendChild(empty);
+                return;
+            }
+
+            // 按时间排序 (id 近似时间)
+            const sorted = [...messages].sort((a, b) => a.id - b.id);
+
+            sorted.forEach((msg) => {
+                const isSelf = (msg.sender === MY_NAME);
+                const msgDiv = document.createElement('div');
+                msgDiv.className = `message ${isSelf ? 'self' : 'other'}`;
+
+                // 小头像
+                const avatar = document.createElement('div');
+                avatar.className = 'avatar-small';
+                avatar.textContent = isSelf ? '🧸' : '🌸';
+
+                // 气泡
+                const bubble = document.createElement('div');
+                bubble.className = 'bubble';
+
+                // 字卡内容
+                const wordSpan = document.createElement('div');
+                wordSpan.className = 'card-word';
+                wordSpan.textContent = msg.word || '💖 未命名';
+
+                const meaningSpan = document.createElement('div');
+                meaningSpan.className = 'card-meaning';
+                meaningSpan.textContent = msg.meaning || '『 属于你们的记忆 』';
+
+                const tagSpan = document.createElement('div');
+                tagSpan.className = 'card-tag';
+                tagSpan.textContent = msg.tag || '❤️ 专属';
+
+                const timeSpan = document.createElement('div');
+                timeSpan.className = 'timestamp';
+                timeSpan.textContent = msg.time || getCurrentTime();
+
+                bubble.appendChild(wordSpan);
+                bubble.appendChild(meaningSpan);
+                bubble.appendChild(tagSpan);
+                bubble.appendChild(timeSpan);
+
+                msgDiv.appendChild(avatar);
+                msgDiv.appendChild(bubble);
+
+                container.appendChild(msgDiv);
+            });
+
+            // 滚动到底部
+            container.scrollTop = container.scrollHeight;
+        }
+
+        // ---------- 发送新字卡 (完全手动) ----------
+        function sendCard() {
+            const wordInput = document.getElementById('wordInput');
+            const meaningInput = document.getElementById('meaningInput');
+
+            let word = wordInput.value.trim();
+            let meaning = meaningInput.value.trim();
+
+            // 如果关键词为空，提示
+            if (!word) {
+                wordInput.focus();
+                wordInput.style.borderColor = '#e0547a';
+                setTimeout(() => { wordInput.style.borderColor = ''; }, 800);
+                return;
+            }
+
+            // 如果诠释为空，给个默认
+            if (!meaning) {
+                meaning = '『 只属于我们的字卡 』';
+            }
+
+            // 构建新消息 (默认发送者为“我”)
+            const newMsg = {
+                id: generateId(),
+                sender: MY_NAME,
+                word: word,
+                meaning: meaning,
+                tag: '💕 此刻',
+                time: getCurrentTime()
+            };
+
+            // 加入数据
+            messages.push(newMsg);
+            saveMessages();
+            renderMessages();
+
+            // 清空输入
+            wordInput.value = '';
+            meaningInput.value = '';
+            wordInput.focus();
+
+            // 模拟爱人回复 (随机延迟，无AI，纯粹预设互动)
+            simulateLoverReply();
+        }
+
+        // ---------- 模拟爱人回复 (无AI，纯预设字库，增强互动) ----------
+        function simulateLoverReply() {
+            // 预设一些星野可能回复的字卡 (手工编写)
+            const loverReplies = [
+                { word: '🍃 风音', meaning: '「穿过林间的风，带来你的名字」', tag: '🍀 聆听' },
+                { word: '🌊 海声', meaning: '「潮汐涨落，都是我在想你」', tag: '🌊 心动' },
+                { word: '🌌 星河', meaning: '「亿万星辰，不及你眼眸」', tag: '✨ 璀璨' },
+                { word: '🌸 花见', meaning: '「与你看遍四季花开」', tag: '🌸 约定' },
+                { word: '☕ 暖茶', meaning: '「捧在手心的温度，像你的存在」', tag: '🍵 温存' },
+                { word: '📖 诗页', meaning: '「字里行间，写满你的名字」', tag: '📜 浪漫' }
+            ];
+
+            // 随机选一条 (但避免总是相同)
+            const randomIndex = Math.floor(Math.random() * loverReplies.length);
+            const reply = loverReplies[randomIndex];
+
+            // 随机延迟 1.5~4 秒，更像真实聊天
+            const delay = 1500 + Math.random() * 2500;
+
+            setTimeout(() => {
+                // 但有可能用户在这期间又发了消息，为了防止混乱，检查最后一条消息是不是自己发的，且时间在5秒内就回复
+                // 简单处理：直接回复，但加一个防重复机制：如果最后一条消息已经是星野发的，就不再回复
+                if (messages.length > 0) {
+                    const last = messages[messages.length - 1];
+                    if (last.sender === LOVER_NAME) {
+                        // 如果最后一条已经是星野，则不再重复回复，避免刷屏
+                        return;
+                    }
+                }
+
+                const newReply = {
+                    id: generateId() + 1,
+                    sender: LOVER_NAME,
+                    word: reply.word,
+                    meaning: reply.meaning,
+                    tag: reply.tag + ' ✦',
+                    time: getCurrentTime()
+                };
+
+                messages.push(newReply);
+                saveMessages();
+                renderMessages();
+
+                // 如果当前滚动到底部则自动跟随，已在render中滚动
+            }, delay);
+        }
+
+        // ---------- 绑定事件 ----------
+        const sendBtn = document.getElementById('sendBtn');
+        const wordInput = document.getElementById('wordInput');
+        const meaningInput = document.getElementById('meaningInput');
+
+        sendBtn.addEventListener('click', sendCard);
+
+        // 回车发送 (在关键词输入框按回车)
+        wordInput.addEventListener('keydown', function(e) {
+            if (e.key === 'Enter') {
+                e.preventDefault();
+                // 如果关键词有内容，直接发送；否则聚焦诠释框
+                if (this.value.trim()) {
+                    sendCard();
+                } else {
+                    meaningInput.focus();
+                }
+            }
+        });
+
+        meaningInput.addEventListener('keydown', function(e) {
+            if (e.key === 'Enter') {
+                e.preventDefault();
+                if (wordInput.value.trim()) {
+                    sendCard();
+                } else {
+                    wordInput.focus();
+                }
+            }
+        });
+
+        // ---------- 额外：清空聊天 (但保留预设，为了重置功能，加个隐藏重置) ----------
+        // 双击标题重置 (仅用于演示)
+        const header = document.querySelector('.chat-header');
+        header.addEventListener('dblclick', function() {
+            if (confirm('重置聊天记录？ (将恢复初始字卡)')) {
+                messages = DEFAULT
