@@ -17,8 +17,8 @@
         .chat-header .info .name { font-size: 1.2rem; font-weight: 500; color: #3f2536; letter-spacing: 1px; display: inline-flex; align-items: center; gap: 4px; }
         .chat-header .info .name .edit-hint { font-size: 0.6rem; color: #b2829b; opacity: 0.5; font-weight: 300; }
         .chat-header .info .status { font-size: 0.7rem; color: #a05a7a; background: rgba(210,160,180,0.15); padding: 0 12px; border-radius: 30px; display: inline-block; border: 1px solid rgba(255,200,215,0.2); }
-        .chat-header .action-icon { font-size: 1.4rem; color: #a05a7a; cursor: pointer; opacity: 0.7; transition: 0.2s; user-select: none; }
-        .chat-header .action-icon:hover { opacity: 1; }
+        .chat-header .action-icon { font-size: 1.4rem; color: #a05a7a; cursor: pointer; opacity: 0.7; transition: 0.2s; user-select: none; padding: 4px; }
+        .chat-header .action-icon:hover { opacity: 1; background: rgba(255,200,215,0.2); border-radius: 50%; }
         .chat-messages { flex: 1; overflow-y: auto; padding: 14px 14px 6px; display: flex; flex-direction: column; gap: 12px; background: rgba(250,240,245,0.2); scroll-behavior: smooth; }
         .chat-messages::-webkit-scrollbar { width: 4px; }
         .chat-messages::-webkit-scrollbar-track { background: transparent; }
@@ -62,7 +62,6 @@
         .empty-chat { text-align: center; padding: 30px 10px; color: #a05a7a; opacity: 0.6; font-size: 0.9rem; }
         .chat-footer { padding: 4px 12px 8px; text-align: center; font-size: 0.55rem; color: #b2829b; letter-spacing: 0.5px; border-top: 1px solid rgba(220,160,185,0.1); background: rgba(255,240,248,0.1); display: flex; justify-content: center; gap: 10px; flex-shrink: 0; }
         .chat-footer span { background: rgba(255,215,225,0.1); padding: 0 8px; border-radius: 30px; }
-        /* 编辑弹窗 */
         .modal-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.3); backdrop-filter: blur(4px); display: none; align-items: center; justify-content: center; z-index: 1000; }
         .modal-overlay.active { display: flex; }
         .modal-box { background: #fff8fa; border-radius: 32px; padding: 28px 24px 24px; max-width: 340px; width: 90%; box-shadow: 0 30px 60px rgba(80,40,60,0.3); border: 1px solid #f5d6e2; }
@@ -153,8 +152,8 @@
                 <span>🧸</span><span>🌸</span><span>🌙</span><span>⭐</span><span>💖</span>
                 <span>🌈</span><span>🦋</span><span>🍀</span><span>🌊</span><span>🎀</span>
                 <span>✨</span><span>🌺</span><span>🌻</span><span>🎵</span><span>💫</span>
-                <span>🪐</span><span>☀️</span><span>🌙</span><span>🐱</span><span>🐶</span>
-                <span>🐰</span><span>🦊</span><span>🐼</span><span>🐨</span><span>🦄</span>
+                <span>🪐</span><span>☀️</span><span>🐱</span><span>🐶</span><span>🐰</span>
+                <span>🦊</span><span>🐼</span><span>🐨</span><span>🦄</span><span>🍭</span>
             </div>
         </div>
         <div class="btn-row">
@@ -172,7 +171,6 @@
         const LOVER_DEFAULT_NAME = '星野';
         const MY_DEFAULT_NAME = '我';
 
-        // 用户配置
         let myName = MY_DEFAULT_NAME;
         let myAvatar = '🧸';
         let loverName = LOVER_DEFAULT_NAME;
@@ -204,7 +202,6 @@
 
         // ---------- 存储 ----------
         function loadData() {
-            // 用户配置
             const storedConfig = localStorage.getItem('chat_config_v2');
             if (storedConfig) {
                 try {
@@ -277,15 +274,10 @@
         function updateUI() {
             myAvatarEl.textContent = myAvatar;
             loverAvatarEl.textContent = loverAvatar;
-            // 显示昵称 (顶部)
             myNameDisplay.innerHTML = `${myName} <span class="edit-hint">✎</span>`;
-            // 更新消息中的发送者名称 (已存储的消息不自动更新，但新消息会使用新名称)
-            // 重新渲染消息
-            renderMessages();
-            // 更新字卡库
-            renderLibrary();
-            // 更新 header 状态
             document.querySelector('.chat-header .info .status').textContent = `💕 与 ${loverName} · 字卡物语`;
+            renderMessages();
+            renderLibrary();
         }
 
         // ---------- 渲染消息 ----------
@@ -453,14 +445,13 @@
         }
 
         // ---------- 编辑弹窗 ----------
-        let editingTarget = 'my'; // 'my' or 'lover'
+        let editingTarget = 'my';
 
         function openEditModal(target) {
             editingTarget = target;
             if (target === 'my') {
                 modalTitle.textContent = '✎ 编辑我的信息';
                 editNameInput.value = myName;
-                // 高亮当前头像
                 document.querySelectorAll('#emojiGrid span').forEach(el => {
                     el.classList.toggle('selected', el.textContent === myAvatar);
                 });
@@ -482,6 +473,17 @@
 
         function saveEditModal() {
             const newName = editNameInput.value.trim() || (editingTarget === 'my' ? MY_DEFAULT_NAME : LOVER_DEFAULT_NAME);
-            // 获取选中的 emoji
             const selected = document.querySelector('#emojiGrid span.selected');
-            const newAvatar = selected ? selected.text
+            const newAvatar = selected ? selected.textContent : (editingTarget === 'my' ? '🧸' : '🌸');
+
+            if (editingTarget === 'my') {
+                myName = newName;
+                myAvatar = newAvatar;
+            } else {
+                loverName = newName;
+                loverAvatar = newAvatar;
+            }
+            saveAll();
+            updateUI();
+            closeEditModal();
+       
