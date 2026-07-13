@@ -5,352 +5,60 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=yes">
     <title>💌 字卡 · 聊天室 💌</title>
     <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-            font-family: 'Segoe UI', 'Noto Sans TC', 'PingFang SC', 'Microsoft YaHei', system-ui, -apple-system, sans-serif;
-        }
-
-        body {
-            background: #efe4e9;
-            min-height: 100vh;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            padding: 12px;
-        }
-
-        .chat-app {
-            max-width: 480px;
-            width: 100%;
-            height: 780px;
-            max-height: 95vh;
-            background: #fcf5f9;
-            border-radius: 42px 42px 32px 32px;
-            box-shadow: 0 20px 50px rgba(140, 80, 110, 0.25), 0 0 0 1px rgba(255, 220, 235, 0.5);
-            display: flex;
-            flex-direction: column;
-            overflow: hidden;
-            position: relative;
-        }
-
-        /* 顶部 */
-        .chat-header {
-            padding: 14px 18px 10px;
-            background: rgba(255, 240, 248, 0.7);
-            backdrop-filter: blur(6px);
-            border-bottom: 1px solid #f5d6e2;
-            display: flex;
-            align-items: center;
-            gap: 10px;
-            flex-shrink: 0;
-        }
-
-        .chat-header .avatar {
-            width: 44px;
-            height: 44px;
-            background: linear-gradient(135deg, #f9c8dd, #e8a6c2);
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 1.6rem;
-            color: #4f2e40;
-            border: 2px solid #ffeef4;
-            flex-shrink: 0;
-        }
-
-        .chat-header .info {
-            flex: 1;
-        }
-        .chat-header .info .name {
-            font-size: 1.2rem;
-            font-weight: 500;
-            color: #3f2536;
-            letter-spacing: 1px;
-        }
-        .chat-header .info .status {
-            font-size: 0.7rem;
-            color: #a05a7a;
-            background: rgba(210, 160, 180, 0.15);
-            padding: 0 12px;
-            border-radius: 30px;
-            display: inline-block;
-            border: 1px solid rgba(255, 200, 215, 0.2);
-        }
-        .chat-header .action-icon {
-            font-size: 1.4rem;
-            color: #a05a7a;
-            cursor: pointer;
-            opacity: 0.7;
-            transition: 0.2s;
-        }
-        .chat-header .action-icon:hover {
-            opacity: 1;
-        }
-
-        /* 消息区域 */
-        .chat-messages {
-            flex: 1;
-            overflow-y: auto;
-            padding: 14px 14px 6px;
-            display: flex;
-            flex-direction: column;
-            gap: 12px;
-            background: rgba(250, 240, 245, 0.2);
-            scroll-behavior: smooth;
-        }
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Segoe UI', 'Noto Sans TC', 'PingFang SC', 'Microsoft YaHei', system-ui, sans-serif; }
+        body { background: #efe4e9; min-height: 100vh; display: flex; justify-content: center; align-items: center; padding: 12px; }
+        .chat-app { max-width: 480px; width: 100%; height: 780px; max-height: 95vh; background: #fcf5f9; border-radius: 42px 42px 32px 32px; box-shadow: 0 20px 50px rgba(140,80,110,0.25), 0 0 0 1px rgba(255,220,235,0.5); display: flex; flex-direction: column; overflow: hidden; position: relative; }
+        .chat-header { padding: 14px 18px 10px; background: rgba(255,240,248,0.7); backdrop-filter: blur(6px); border-bottom: 1px solid #f5d6e2; display: flex; align-items: center; gap: 10px; flex-shrink: 0; }
+        .chat-header .avatar { width: 44px; height: 44px; background: linear-gradient(135deg, #f9c8dd, #e8a6c2); border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 1.6rem; color: #4f2e40; border: 2px solid #ffeef4; flex-shrink: 0; }
+        .chat-header .info { flex: 1; }
+        .chat-header .info .name { font-size: 1.2rem; font-weight: 500; color: #3f2536; letter-spacing: 1px; }
+        .chat-header .info .status { font-size: 0.7rem; color: #a05a7a; background: rgba(210,160,180,0.15); padding: 0 12px; border-radius: 30px; display: inline-block; border: 1px solid rgba(255,200,215,0.2); }
+        .chat-header .action-icon { font-size: 1.4rem; color: #a05a7a; cursor: pointer; opacity: 0.7; transition: 0.2s; user-select: none; }
+        .chat-header .action-icon:hover { opacity: 1; }
+        .chat-messages { flex: 1; overflow-y: auto; padding: 14px 14px 6px; display: flex; flex-direction: column; gap: 12px; background: rgba(250,240,245,0.2); scroll-behavior: smooth; }
         .chat-messages::-webkit-scrollbar { width: 4px; }
         .chat-messages::-webkit-scrollbar-track { background: transparent; }
         .chat-messages::-webkit-scrollbar-thumb { background: #dbb6cc; border-radius: 20px; }
-
-        /* 消息气泡 */
-        .message {
-            display: flex;
-            align-items: flex-end;
-            gap: 8px;
-            max-width: 88%;
-            animation: fadeIn 0.2s ease;
-        }
+        .message { display: flex; align-items: flex-end; gap: 8px; max-width: 88%; animation: fadeIn 0.2s ease; }
         @keyframes fadeIn { from { opacity: 0.4; transform: translateY(6px); } to { opacity: 1; transform: translateY(0); } }
         .message.self { align-self: flex-end; flex-direction: row-reverse; }
         .message.other { align-self: flex-start; }
-
-        .message .bubble {
-            padding: 10px 14px;
-            border-radius: 20px 20px 6px 20px;
-            background: white;
-            box-shadow: 0 2px 8px rgba(140, 80, 110, 0.08);
-            border: 1px solid rgba(255, 220, 235, 0.3);
-            max-width: 100%;
-            word-break: break-word;
-            line-height: 1.5;
-        }
-        .message.self .bubble {
-            background: #f0d7e4;
-            border-radius: 20px 20px 20px 6px;
-            border-color: #ecc4d6;
-            color: #2d1d26;
-        }
-
-        .message .bubble .card-word {
-            font-size: 1.15rem;
-            font-weight: 500;
-            color: #3f2536;
-            letter-spacing: 0.5px;
-        }
-        .message .bubble .card-meaning {
-            font-size: 0.82rem;
-            color: #6e4a5f;
-            margin-top: 3px;
-            background: rgba(255, 240, 245, 0.3);
-            padding: 0 10px 0 8px;
-            border-radius: 30px;
-            display: inline-block;
-            border: 1px solid rgba(255, 200, 215, 0.15);
-        }
-        .message .bubble .card-tag {
-            font-size: 0.6rem;
-            color: #9a6b80;
-            margin-top: 4px;
-            letter-spacing: 0.3px;
-            background: rgba(235, 190, 210, 0.1);
-            padding: 0 10px;
-            border-radius: 30px;
-            display: inline-block;
-        }
-        .message .bubble .timestamp {
-            font-size: 0.55rem;
-            color: #b08599;
-            margin-top: 4px;
-            text-align: right;
-            opacity: 0.7;
-        }
-        .message .avatar-small {
-            width: 28px;
-            height: 28px;
-            border-radius: 50%;
-            background: #f0d7e4;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 0.8rem;
-            flex-shrink: 0;
-            border: 1px solid #ffeef4;
-            color: #4f2e40;
-        }
+        .message .bubble { padding: 10px 14px; border-radius: 20px 20px 6px 20px; background: white; box-shadow: 0 2px 8px rgba(140,80,110,0.08); border: 1px solid rgba(255,220,235,0.3); max-width: 100%; word-break: break-word; line-height: 1.5; }
+        .message.self .bubble { background: #f0d7e4; border-radius: 20px 20px 20px 6px; border-color: #ecc4d6; color: #2d1d26; }
+        .message .bubble .card-word { font-size: 1.15rem; font-weight: 500; color: #3f2536; letter-spacing: 0.5px; }
+        .message .bubble .card-meaning { font-size: 0.82rem; color: #6e4a5f; margin-top: 3px; background: rgba(255,240,245,0.3); padding: 0 10px 0 8px; border-radius: 30px; display: inline-block; border: 1px solid rgba(255,200,215,0.15); }
+        .message .bubble .card-tag { font-size: 0.6rem; color: #9a6b80; margin-top: 4px; letter-spacing: 0.3px; background: rgba(235,190,210,0.1); padding: 0 10px; border-radius: 30px; display: inline-block; }
+        .message .bubble .timestamp { font-size: 0.55rem; color: #b08599; margin-top: 4px; text-align: right; opacity: 0.7; }
+        .message .avatar-small { width: 28px; height: 28px; border-radius: 50%; background: #f0d7e4; display: flex; align-items: center; justify-content: center; font-size: 0.8rem; flex-shrink: 0; border: 1px solid #ffeef4; color: #4f2e40; }
         .message.self .avatar-small { background: #dbb6cc; }
-
-        /* 底部输入区 */
-        .chat-input-area {
-            padding: 10px 14px 14px;
-            background: rgba(255, 240, 248, 0.5);
-            backdrop-filter: blur(6px);
-            border-top: 1px solid #f5d6e2;
-            display: flex;
-            gap: 8px;
-            align-items: center;
-            flex-shrink: 0;
-            flex-wrap: wrap;
-        }
-        .chat-input-area .input-group {
-            display: flex;
-            flex: 1;
-            gap: 6px;
-            min-width: 160px;
-        }
-        .chat-input-area input {
-            flex: 1;
-            padding: 10px 14px;
-            border-radius: 40px;
-            border: 1px solid #f0c8da;
-            background: rgba(255, 255, 255, 0.7);
-            font-size: 0.9rem;
-            outline: none;
-            transition: 0.2s;
-            color: #2d1d26;
-            min-width: 60px;
-        }
-        .chat-input-area input:focus {
-            border-color: #d696b5;
-            background: #fff9fc;
-            box-shadow: 0 0 0 3px rgba(210, 140, 175, 0.12);
-        }
-        .chat-input-area input::placeholder {
-            color: #b2829b;
-            font-weight: 300;
-            font-size: 0.8rem;
-        }
-
-        .btn {
-            border: none;
-            border-radius: 40px;
-            padding: 10px 18px;
-            font-size: 0.9rem;
-            background: #eccadc;
-            color: #412b3b;
-            border: 1px solid #f0c8da;
-            cursor: pointer;
-            transition: 0.2s;
-            display: inline-flex;
-            align-items: center;
-            gap: 4px;
-            white-space: nowrap;
-        }
+        .chat-input-area { padding: 10px 14px 14px; background: rgba(255,240,248,0.5); backdrop-filter: blur(6px); border-top: 1px solid #f5d6e2; display: flex; gap: 8px; align-items: center; flex-shrink: 0; flex-wrap: wrap; }
+        .chat-input-area .input-group { display: flex; flex: 1; gap: 6px; min-width: 160px; }
+        .chat-input-area input { flex: 1; padding: 10px 14px; border-radius: 40px; border: 1px solid #f0c8da; background: rgba(255,255,255,0.7); font-size: 0.9rem; outline: none; transition: 0.2s; color: #2d1d26; min-width: 60px; }
+        .chat-input-area input:focus { border-color: #d696b5; background: #fff9fc; box-shadow: 0 0 0 3px rgba(210,140,175,0.12); }
+        .chat-input-area input::placeholder { color: #b2829b; font-weight: 300; font-size: 0.8rem; }
+        .btn { border: none; border-radius: 40px; padding: 10px 18px; font-size: 0.9rem; background: #eccadc; color: #412b3b; border: 1px solid #f0c8da; cursor: pointer; transition: 0.2s; display: inline-flex; align-items: center; gap: 4px; white-space: nowrap; }
         .btn:hover { background: #e6b8d0; transform: scale(1.02); border-color: #d696b5; }
         .btn:active { transform: scale(0.94); }
         .btn-primary { background: #f0d7e4; border-color: #ecc4d6; }
         .btn-sm { padding: 6px 12px; font-size: 0.75rem; }
-
-        /* 字卡库面板 */
-        .library-panel {
-            background: rgba(255, 245, 250, 0.95);
-            backdrop-filter: blur(8px);
-            border-top: 2px solid #f5d6e2;
-            padding: 12px 16px 16px;
-            max-height: 260px;
-            overflow-y: auto;
-            flex-shrink: 0;
-            display: none;
-            transition: 0.3s;
-        }
+        .library-panel { background: rgba(255,245,250,0.95); backdrop-filter: blur(8px); border-top: 2px solid #f5d6e2; padding: 12px 16px 16px; max-height: 260px; overflow-y: auto; flex-shrink: 0; display: none; transition: 0.3s; }
         .library-panel.open { display: block; }
         .library-panel::-webkit-scrollbar { width: 3px; }
         .library-panel::-webkit-scrollbar-thumb { background: #dbb6cc; border-radius: 20px; }
-
-        .library-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 8px;
-            flex-wrap: wrap;
-            gap: 6px;
-        }
-        .library-header h4 {
-            font-weight: 400;
-            color: #4f2e40;
-            letter-spacing: 1px;
-            font-size: 0.95rem;
-        }
-        .library-actions {
-            display: flex;
-            gap: 6px;
-            flex-wrap: wrap;
-        }
-
-        .library-item {
-            background: rgba(255, 240, 248, 0.5);
-            border-radius: 40px;
-            padding: 6px 12px 6px 16px;
-            display: inline-flex;
-            align-items: center;
-            gap: 6px;
-            margin: 3px 4px 3px 0;
-            border: 1px solid #f0d0df;
-            font-size: 0.85rem;
-            transition: 0.15s;
-        }
+        .library-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px; flex-wrap: wrap; gap: 6px; }
+        .library-header h4 { font-weight: 400; color: #4f2e40; letter-spacing: 1px; font-size: 0.95rem; }
+        .library-actions { display: flex; gap: 6px; flex-wrap: wrap; }
+        .library-item { background: rgba(255,240,248,0.5); border-radius: 40px; padding: 6px 12px 6px 16px; display: inline-flex; align-items: center; gap: 6px; margin: 3px 4px 3px 0; border: 1px solid #f0d0df; font-size: 0.85rem; transition: 0.15s; cursor: pointer; }
         .library-item:hover { background: #ffeef4; }
-        .library-item .del-btn {
-            background: none;
-            border: none;
-            color: #b05a7a;
-            cursor: pointer;
-            font-size: 1rem;
-            line-height: 1;
-            padding: 0 2px;
-            opacity: 0.5;
-            transition: 0.15s;
-        }
+        .library-item .del-btn { background: none; border: none; color: #b05a7a; cursor: pointer; font-size: 1rem; line-height: 1; padding: 0 2px; opacity: 0.5; transition: 0.15s; }
         .library-item .del-btn:hover { opacity: 1; color: #d04060; }
-
-        .library-add-area {
-            display: flex;
-            gap: 6px;
-            flex-wrap: wrap;
-            margin-top: 6px;
-            align-items: center;
-        }
-        .library-add-area input {
-            flex: 1 1 100px;
-            padding: 6px 12px;
-            border-radius: 40px;
-            border: 1px solid #f0c8da;
-            background: rgba(255,255,255,0.6);
-            font-size: 0.8rem;
-            outline: none;
-            min-width: 60px;
-        }
+        .library-add-area { display: flex; gap: 6px; flex-wrap: wrap; margin-top: 6px; align-items: center; }
+        .library-add-area input { flex: 1 1 100px; padding: 6px 12px; border-radius: 40px; border: 1px solid #f0c8da; background: rgba(255,255,255,0.6); font-size: 0.8rem; outline: none; min-width: 60px; }
         .library-add-area input:focus { border-color: #d696b5; }
-
         .empty-chat { text-align: center; padding: 30px 10px; color: #a05a7a; opacity: 0.6; font-size: 0.9rem; }
-        .chat-footer {
-            padding: 4px 12px 8px;
-            text-align: center;
-            font-size: 0.55rem;
-            color: #b2829b;
-            letter-spacing: 0.5px;
-            border-top: 1px solid rgba(220, 160, 185, 0.1);
-            background: rgba(255, 240, 248, 0.1);
-            display: flex;
-            justify-content: center;
-            gap: 10px;
-            flex-shrink: 0;
-        }
-        .chat-footer span { background: rgba(255, 215, 225, 0.1); padding: 0 8px; border-radius: 30px; }
-
-        @media (max-width: 480px) {
-            .chat-app { border-radius: 28px; height: 90vh; max-height: 90vh; }
-            .chat-header { padding: 12px 14px 8px; }
-            .chat-messages { padding: 10px 8px 4px; gap: 10px; }
-            .message { max-width: 92%; }
-            .chat-input-area { padding: 8px 10px 12px; gap: 4px; }
-            .chat-input-area .input-group { min-width: 120px; flex-wrap: wrap; }
-            .chat-input-area input { padding: 8px 10px; font-size: 0.8rem; min-width: 50px; }
-            .btn { padding: 8px 12px; font-size: 0.8rem; }
-            .library-panel { padding: 10px 12px; max-height: 200px; }
-        }
+        .chat-footer { padding: 4px 12px 8px; text-align: center; font-size: 0.55rem; color: #b2829b; letter-spacing: 0.5px; border-top: 1px solid rgba(220,160,185,0.1); background: rgba(255,240,248,0.1); display: flex; justify-content: center; gap: 10px; flex-shrink: 0; }
+        .chat-footer span { background: rgba(255,215,225,0.1); padding: 0 8px; border-radius: 30px; }
+        @media (max-width: 480px) { .chat-app { border-radius: 28px; height: 90vh; max-height: 90vh; } .chat-header { padding: 12px 14px 8px; } .chat-messages { padding: 10px 8px 4px; gap: 10px; } .message { max-width: 92%; } .chat-input-area { padding: 8px 10px 12px; gap: 4px; } .chat-input-area .input-group { min-width: 120px; flex-wrap: wrap; } .chat-input-area input { padding: 8px 10px; font-size: 0.8rem; min-width: 50px; } .btn { padding: 8px 12px; font-size: 0.8rem; } .library-panel { padding: 10px 12px; max-height: 200px; } }
     </style>
 </head>
 <body>
@@ -386,7 +94,7 @@
             <input type="text" id="newLibraryMeaning" placeholder="诠释 / 表情 / 颜文字">
             <button class="btn btn-sm" id="addLibraryBtn">➕ 添加到库</button>
         </div>
-        <div style="margin-top: 6px; font-size: 0.7rem; color: #b2829b; text-align: right;">点击 ❌ 删除字卡</div>
+        <div style="margin-top: 6px; font-size: 0.7rem; color: #b2829b; text-align: right;">点击字卡快速发送 · 点击 ❌ 删除</div>
     </div>
 
     <!-- 底部输入 -->
@@ -413,19 +121,15 @@
         const MY_NAME = '我';
         const LOVER_NAME = '星野';
 
-        // 消息存储
         let messages = [];
-        // 字卡库 (包含表情包、颜文字)
         let libraryCards = [];
 
-        // 默认初始消息
         const DEFAULT_MESSAGES = [
             { id: Date.now()+1, sender: LOVER_NAME, word: '🌸 浅樱', meaning: '「春日初绽，是见到你时的心跳」', tag: '🌸 约定', time: new Date(Date.now()-3600000).toLocaleTimeString('zh-CN',{hour:'2-digit',minute:'2-digit'}) },
             { id: Date.now()+2, sender: MY_NAME, word: '🌙 月白', meaning: '「如月光般温柔，只为你一人明亮」', tag: '✨ 专属', time: new Date(Date.now()-1800000).toLocaleTimeString('zh-CN',{hour:'2-digit',minute:'2-digit'}) },
             { id: Date.now()+3, sender: LOVER_NAME, word: '💫 星迹', meaning: '「沿着光年的轨迹，抵达你的身边」', tag: '🌠 永恒', time: new Date(Date.now()-600000).toLocaleTimeString('zh-CN',{hour:'2-digit',minute:'2-digit'}) }
         ];
 
-        // 默认字卡库 (包含表情包、颜文字)
         const DEFAULT_LIBRARY = [
             { word: '🌸 浅樱', meaning: '春日初绽', tag: '🌸' },
             { word: '🌙 月白', meaning: '温柔如月', tag: '✨' },
@@ -433,7 +137,6 @@
             { word: '💫 星迹', meaning: '光年之约', tag: '🌠' },
             { word: '🌊 海声', meaning: '潮汐想念', tag: '🌊' },
             { word: '☕ 暖茶', meaning: '掌心的温度', tag: '🍵' },
-            // 表情包/颜文字 作为特殊字卡
             { word: '😊 微笑', meaning: '（＾▽＾）', tag: '💕' },
             { word: '😂 笑泪', meaning: ' (≧∇≦)ﾉ', tag: '😂' },
             { word: '✨ 星星眼', meaning: ' ✧*｡٩(ˊᗜˋ*)و✧*｡', tag: '🌟' },
@@ -472,8 +175,21 @@
         function generateId() { return Date.now() + Math.floor(Math.random() * 10000); }
         function getCurrentTime() { return new Date().toLocaleTimeString('zh-CN', { hour:'2-digit', minute:'2-digit' }); }
 
-        // ---------- 渲染消息 ----------
+        // ---------- DOM 引用 ----------
         const container = document.getElementById('messageContainer');
+        const libraryList = document.getElementById('libraryList');
+        const libraryPanel = document.getElementById('libraryPanel');
+        const toggleBtn = document.getElementById('toggleLibraryBtn');
+        const wordInput = document.getElementById('wordInput');
+        const meaningInput = document.getElementById('meaningInput');
+        const sendBtn = document.getElementById('sendBtn');
+        const addLibraryBtn = document.getElementById('addLibraryBtn');
+        const newWordInput = document.getElementById('newLibraryWord');
+        const newMeaningInput = document.getElementById('newLibraryMeaning');
+        const addEmojiBtn = document.getElementById('addEmojiBtn');
+        const addKaomojiBtn = document.getElementById('addKaomojiBtn');
+
+        // ---------- 渲染消息 ----------
         function renderMessages() {
             container.innerHTML = '';
             if (!messages || messages.length === 0) {
@@ -517,7 +233,6 @@
         }
 
         // ---------- 渲染字卡库 ----------
-        const libraryList = document.getElementById('libraryList');
         function renderLibrary() {
             libraryList.innerHTML = '';
             if (!libraryCards || libraryCards.length === 0) {
@@ -531,6 +246,7 @@
             libraryCards.forEach((card, index) => {
                 const item = document.createElement('span');
                 item.className = 'library-item';
+                item.dataset.index = index;
                 item.innerHTML = `
                     <span>${card.word || '📌'} ${card.meaning ? '· ' + card.meaning : ''} ${card.tag ? ' ' + card.tag : ''}</span>
                     <button class="del-btn" data-index="${index}" title="删除">✕</button>
@@ -538,10 +254,199 @@
                 libraryList.appendChild(item);
             });
 
-            // 删除事件
+            // 删除事件 (直接绑定)
             document.querySelectorAll('.library-item .del-btn').forEach(btn => {
                 btn.addEventListener('click', function(e) {
                     e.stopPropagation();
                     const idx = parseInt(this.dataset.index, 10);
                     if (!isNaN(idx) && idx >= 0 && idx < libraryCards.length) {
-              
+                        if (confirm(`删除字卡「${libraryCards[idx].word}」？`)) {
+                            libraryCards.splice(idx, 1);
+                            saveAll();
+                            renderLibrary();
+                        }
+                    }
+                });
+            });
+
+            // 点击字卡快速发送 (委托)
+            libraryList.querySelectorAll('.library-item').forEach(item => {
+                item.addEventListener('click', function(e) {
+                    if (e.target.classList.contains('del-btn')) return;
+                    const idx = parseInt(this.dataset.index, 10);
+                    if (!isNaN(idx) && idx >= 0 && idx < libraryCards.length) {
+                        const card = libraryCards[idx];
+                        sendCardFromInput(card.word || '🌸', card.meaning || '');
+                    }
+                });
+            });
+        }
+
+        // ---------- 发送字卡 ----------
+        function sendCardFromInput(word, meaning) {
+            if (!word || word.trim() === '') {
+                wordInput.focus();
+                return false;
+            }
+            const newMsg = {
+                id: generateId(),
+                sender: MY_NAME,
+                word: word.trim(),
+                meaning: meaning ? meaning.trim() : '',
+                tag: '💕 此刻',
+                time: getCurrentTime()
+            };
+            messages.push(newMsg);
+            saveAll();
+            renderMessages();
+            wordInput.value = '';
+            meaningInput.value = '';
+            wordInput.focus();
+            simulateLoverReply();
+            return true;
+        }
+
+        // ---------- 模拟爱人回复 ----------
+        function simulateLoverReply() {
+            if (!libraryCards || libraryCards.length === 0) {
+                const fallback = { word: '🌸 花见', meaning: '与你相遇', tag: '🌸' };
+                setTimeout(() => {
+                    if (messages.length > 0 && messages[messages.length-1].sender === LOVER_NAME) return;
+                    const reply = { id: generateId()+1, sender: LOVER_NAME, word: fallback.word, meaning: fallback.meaning, tag: fallback.tag + ' ✦', time: getCurrentTime() };
+                    messages.push(reply);
+                    saveAll();
+                    renderMessages();
+                }, 1500 + Math.random()*2000);
+                return;
+            }
+
+            const delay = 1500 + Math.random() * 2500;
+            setTimeout(() => {
+                if (messages.length > 0 && messages[messages.length-1].sender === LOVER_NAME) return;
+                const randomIndex = Math.floor(Math.random() * libraryCards.length);
+                const card = libraryCards[randomIndex];
+                if (!card) return;
+                const reply = {
+                    id: generateId()+1,
+                    sender: LOVER_NAME,
+                    word: card.word || '🌸',
+                    meaning: card.meaning || '',
+                    tag: (card.tag || '❤️') + ' ✦',
+                    time: getCurrentTime()
+                };
+                messages.push(reply);
+                saveAll();
+                renderMessages();
+            }, delay);
+        }
+
+        // ---------- 添加到字卡库 ----------
+        function addToLibrary(word, meaning, tag) {
+            word = word.trim();
+            if (!word) return false;
+            const newCard = {
+                word: word,
+                meaning: (meaning || '').trim(),
+                tag: (tag || '❤️').trim()
+            };
+            libraryCards.push(newCard);
+            saveAll();
+            renderLibrary();
+            return true;
+        }
+
+        // ---------- 事件绑定 ----------
+        function init() {
+            loadData();
+            renderMessages();
+            renderLibrary();
+
+            // 发送按钮
+            sendBtn.addEventListener('click', function() {
+                sendCardFromInput(wordInput.value, meaningInput.value);
+            });
+
+            // 回车发送
+            wordInput.addEventListener('keydown', function(e) {
+                if (e.key === 'Enter') {
+                    e.preventDefault();
+                    if (this.value.trim()) {
+                        sendCardFromInput(this.value, meaningInput.value);
+                    } else {
+                        meaningInput.focus();
+                    }
+                }
+            });
+            meaningInput.addEventListener('keydown', function(e) {
+                if (e.key === 'Enter') {
+                    e.preventDefault();
+                    if (wordInput.value.trim()) {
+                        sendCardFromInput(wordInput.value, this.value);
+                    } else {
+                        wordInput.focus();
+                    }
+                }
+            });
+
+            // 字卡库面板切换
+            toggleBtn.addEventListener('click', function() {
+                libraryPanel.classList.toggle('open');
+                if (libraryPanel.classList.contains('open')) {
+                    renderLibrary();
+                }
+            });
+
+            // 添加到库
+            addLibraryBtn.addEventListener('click', function() {
+                const word = newWordInput.value;
+                const meaning = newMeaningInput.value;
+                if (addToLibrary(word, meaning)) {
+                    newWordInput.value = '';
+                    newMeaningInput.value = '';
+                    newWordInput.focus();
+                } else {
+                    newWordInput.focus();
+                }
+            });
+
+            // 快速添加表情
+            addEmojiBtn.addEventListener('click', function() {
+                const emojis = ['😊', '😂', '🥰', '😍', '🤗', '✨', '🌟', '💖', '🌸', '🍀', '🎵', '🌈', '🔥', '⭐', '🎉', '💯'];
+                const rand = emojis[Math.floor(Math.random() * emojis.length)];
+                newWordInput.value = rand + ' 表情';
+                newMeaningInput.value = ' (◕‿◕)♡ ';
+                addLibraryBtn.click();
+            });
+
+            // 快速添加颜文字
+            addKaomojiBtn.addEventListener('click', function() {
+                const kaomoji = ['(＾▽＾)', '(≧∇≦)', '(◕‿◕)♡', '✧*｡٩(ˊᗜˋ*)و✧*｡', '(っ˘ω˘ς)', '♪(´▽｀)', '(｡•̀ᴗ-)✧', '٩(◕‿◕｡)۶', '(◠‿◠✿)', '♡(◕ᴗ◕✿)'];
+                const rand = kaomoji[Math.floor(Math.random() * kaomoji.length)];
+                newWordInput.value = '✨ 颜文字';
+                newMeaningInput.value = rand;
+                addLibraryBtn.click();
+            });
+
+            // 双击顶部重置聊天 (保留字卡库)
+            document.querySelector('.chat-header').addEventListener('dblclick', function() {
+                if (confirm('重置聊天记录？ (保留字卡库)')) {
+                    messages = DEFAULT_MESSAGES.map(m => ({ ...m }));
+                    saveAll();
+                    renderMessages();
+                }
+            });
+
+            console.log('💌 字卡聊天室 v2 已启动，所有按钮功能正常');
+            console.log('📚 点击字卡库中的卡片即可快速发送');
+        }
+
+        // 页面加载完成后初始化
+        if (document.readyState === 'loading') {
+            document.addEventListener('DOMContentLoaded', init);
+        } else {
+            init();
+        }
+    })();
+</script>
+</body>
+</html>
