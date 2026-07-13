@@ -8,10 +8,14 @@
         * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Segoe UI', 'Noto Sans TC', 'PingFang SC', 'Microsoft YaHei', system-ui, sans-serif; }
         body { background: #efe4e9; min-height: 100vh; display: flex; justify-content: center; align-items: center; padding: 12px; }
         .chat-app { max-width: 480px; width: 100%; height: 780px; max-height: 95vh; background: #fcf5f9; border-radius: 42px 42px 32px 32px; box-shadow: 0 20px 50px rgba(140,80,110,0.25), 0 0 0 1px rgba(255,220,235,0.5); display: flex; flex-direction: column; overflow: hidden; position: relative; }
-        .chat-header { padding: 14px 18px 10px; background: rgba(255,240,248,0.7); backdrop-filter: blur(6px); border-bottom: 1px solid #f5d6e2; display: flex; align-items: center; gap: 10px; flex-shrink: 0; }
-        .chat-header .avatar { width: 44px; height: 44px; background: linear-gradient(135deg, #f9c8dd, #e8a6c2); border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 1.6rem; color: #4f2e40; border: 2px solid #ffeef4; flex-shrink: 0; }
-        .chat-header .info { flex: 1; }
-        .chat-header .info .name { font-size: 1.2rem; font-weight: 500; color: #3f2536; letter-spacing: 1px; }
+        .chat-header { padding: 12px 16px 10px; background: rgba(255,240,248,0.7); backdrop-filter: blur(6px); border-bottom: 1px solid #f5d6e2; display: flex; align-items: center; gap: 10px; flex-shrink: 0; }
+        .chat-header .avatar-wrapper { position: relative; cursor: pointer; flex-shrink: 0; }
+        .chat-header .avatar-wrapper .avatar { width: 48px; height: 48px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 2rem; border: 2px solid #ffeef4; box-shadow: 0 2px 8px rgba(140,80,110,0.1); transition: 0.2s; background: #f0d7e4; }
+        .chat-header .avatar-wrapper:hover .avatar { filter: brightness(0.92); }
+        .chat-header .avatar-wrapper .badge { position: absolute; bottom: -2px; right: -2px; background: rgba(255,255,255,0.85); border-radius: 30px; font-size: 0.5rem; padding: 0 6px; border: 1px solid #f5d6e2; color: #7a4d64; }
+        .chat-header .info { flex: 1; cursor: pointer; }
+        .chat-header .info .name { font-size: 1.2rem; font-weight: 500; color: #3f2536; letter-spacing: 1px; display: inline-flex; align-items: center; gap: 4px; }
+        .chat-header .info .name .edit-hint { font-size: 0.6rem; color: #b2829b; opacity: 0.5; font-weight: 300; }
         .chat-header .info .status { font-size: 0.7rem; color: #a05a7a; background: rgba(210,160,180,0.15); padding: 0 12px; border-radius: 30px; display: inline-block; border: 1px solid rgba(255,200,215,0.2); }
         .chat-header .action-icon { font-size: 1.4rem; color: #a05a7a; cursor: pointer; opacity: 0.7; transition: 0.2s; user-select: none; }
         .chat-header .action-icon:hover { opacity: 1; }
@@ -29,7 +33,7 @@
         .message .bubble .card-meaning { font-size: 0.82rem; color: #6e4a5f; margin-top: 3px; background: rgba(255,240,245,0.3); padding: 0 10px 0 8px; border-radius: 30px; display: inline-block; border: 1px solid rgba(255,200,215,0.15); }
         .message .bubble .card-tag { font-size: 0.6rem; color: #9a6b80; margin-top: 4px; letter-spacing: 0.3px; background: rgba(235,190,210,0.1); padding: 0 10px; border-radius: 30px; display: inline-block; }
         .message .bubble .timestamp { font-size: 0.55rem; color: #b08599; margin-top: 4px; text-align: right; opacity: 0.7; }
-        .message .avatar-small { width: 28px; height: 28px; border-radius: 50%; background: #f0d7e4; display: flex; align-items: center; justify-content: center; font-size: 0.8rem; flex-shrink: 0; border: 1px solid #ffeef4; color: #4f2e40; }
+        .message .avatar-small { width: 28px; height: 28px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 0.9rem; flex-shrink: 0; border: 1px solid #ffeef4; background: #f0d7e4; }
         .message.self .avatar-small { background: #dbb6cc; }
         .chat-input-area { padding: 10px 14px 14px; background: rgba(255,240,248,0.5); backdrop-filter: blur(6px); border-top: 1px solid #f5d6e2; display: flex; gap: 8px; align-items: center; flex-shrink: 0; flex-wrap: wrap; }
         .chat-input-area .input-group { display: flex; flex: 1; gap: 6px; min-width: 160px; }
@@ -58,7 +62,22 @@
         .empty-chat { text-align: center; padding: 30px 10px; color: #a05a7a; opacity: 0.6; font-size: 0.9rem; }
         .chat-footer { padding: 4px 12px 8px; text-align: center; font-size: 0.55rem; color: #b2829b; letter-spacing: 0.5px; border-top: 1px solid rgba(220,160,185,0.1); background: rgba(255,240,248,0.1); display: flex; justify-content: center; gap: 10px; flex-shrink: 0; }
         .chat-footer span { background: rgba(255,215,225,0.1); padding: 0 8px; border-radius: 30px; }
-        @media (max-width: 480px) { .chat-app { border-radius: 28px; height: 90vh; max-height: 90vh; } .chat-header { padding: 12px 14px 8px; } .chat-messages { padding: 10px 8px 4px; gap: 10px; } .message { max-width: 92%; } .chat-input-area { padding: 8px 10px 12px; gap: 4px; } .chat-input-area .input-group { min-width: 120px; flex-wrap: wrap; } .chat-input-area input { padding: 8px 10px; font-size: 0.8rem; min-width: 50px; } .btn { padding: 8px 12px; font-size: 0.8rem; } .library-panel { padding: 10px 12px; max-height: 200px; } }
+        /* 编辑弹窗 */
+        .modal-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.3); backdrop-filter: blur(4px); display: none; align-items: center; justify-content: center; z-index: 1000; }
+        .modal-overlay.active { display: flex; }
+        .modal-box { background: #fff8fa; border-radius: 32px; padding: 28px 24px 24px; max-width: 340px; width: 90%; box-shadow: 0 30px 60px rgba(80,40,60,0.3); border: 1px solid #f5d6e2; }
+        .modal-box h3 { font-weight: 400; color: #3f2536; margin-bottom: 16px; letter-spacing: 1px; text-align: center; }
+        .modal-box .field { margin-bottom: 14px; }
+        .modal-box .field label { display: block; font-size: 0.75rem; color: #7a4d64; margin-bottom: 4px; letter-spacing: 0.5px; }
+        .modal-box .field input { width: 100%; padding: 10px 14px; border-radius: 40px; border: 1px solid #f0c8da; background: rgba(255,255,255,0.7); font-size: 0.95rem; outline: none; transition: 0.2s; }
+        .modal-box .field input:focus { border-color: #d696b5; box-shadow: 0 0 0 3px rgba(210,140,175,0.1); }
+        .modal-box .field .emoji-grid { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 6px; }
+        .modal-box .field .emoji-grid span { font-size: 1.8rem; cursor: pointer; padding: 4px 6px; border-radius: 20px; transition: 0.15s; border: 2px solid transparent; }
+        .modal-box .field .emoji-grid span:hover { background: #f5d6e2; border-color: #e8a6c2; transform: scale(1.1); }
+        .modal-box .field .emoji-grid span.selected { background: #f0d7e4; border-color: #d696b5; }
+        .modal-box .btn-row { display: flex; gap: 10px; margin-top: 16px; justify-content: flex-end; }
+        .modal-box .btn-row .btn { flex: 1; justify-content: center; }
+        @media (max-width: 480px) { .chat-app { border-radius: 28px; height: 90vh; max-height: 90vh; } .chat-header { padding: 10px 12px 8px; } .chat-header .avatar-wrapper .avatar { width: 40px; height: 40px; font-size: 1.6rem; } .chat-messages { padding: 10px 8px 4px; gap: 10px; } .message { max-width: 92%; } .chat-input-area { padding: 8px 10px 12px; gap: 4px; } .chat-input-area .input-group { min-width: 120px; flex-wrap: wrap; } .chat-input-area input { padding: 8px 10px; font-size: 0.8rem; min-width: 50px; } .btn { padding: 8px 12px; font-size: 0.8rem; } .library-panel { padding: 10px 12px; max-height: 200px; } .modal-box { padding: 20px 16px; } }
     </style>
 </head>
 <body>
@@ -66,10 +85,17 @@
 <div class="chat-app" id="app">
     <!-- 顶部 -->
     <div class="chat-header">
-        <div class="avatar">🌸</div>
-        <div class="info">
-            <div class="name">星野 · 爱人</div>
-            <div class="status">💕 在线 · 只为你</div>
+        <div class="avatar-wrapper" id="myAvatarWrapper" title="点击修改我的头像">
+            <div class="avatar" id="myAvatar">🧸</div>
+            <span class="badge">我</span>
+        </div>
+        <div class="info" id="headerInfo">
+            <div class="name" id="myNameDisplay">我 <span class="edit-hint">✎</span></div>
+            <div class="status">💕 与你 · 字卡物语</div>
+        </div>
+        <div class="avatar-wrapper" id="loverAvatarWrapper" title="点击修改星野的头像">
+            <div class="avatar" id="loverAvatar">🌸</div>
+            <span class="badge">❤️</span>
         </div>
         <div class="action-icon" id="toggleLibraryBtn" title="字卡库">📚</div>
     </div>
@@ -113,21 +139,52 @@
     </div>
 </div>
 
+<!-- 编辑弹窗 -->
+<div class="modal-overlay" id="editModal">
+    <div class="modal-box">
+        <h3 id="modalTitle">✎ 编辑信息</h3>
+        <div class="field">
+            <label>昵称</label>
+            <input type="text" id="editNameInput" placeholder="输入昵称…" maxlength="20">
+        </div>
+        <div class="field">
+            <label>头像 (点击选择)</label>
+            <div class="emoji-grid" id="emojiGrid">
+                <span>🧸</span><span>🌸</span><span>🌙</span><span>⭐</span><span>💖</span>
+                <span>🌈</span><span>🦋</span><span>🍀</span><span>🌊</span><span>🎀</span>
+                <span>✨</span><span>🌺</span><span>🌻</span><span>🎵</span><span>💫</span>
+                <span>🪐</span><span>☀️</span><span>🌙</span><span>🐱</span><span>🐶</span>
+                <span>🐰</span><span>🦊</span><span>🐼</span><span>🐨</span><span>🦄</span>
+            </div>
+        </div>
+        <div class="btn-row">
+            <button class="btn" id="modalCancelBtn">取消</button>
+            <button class="btn btn-primary" id="modalSaveBtn">保存</button>
+        </div>
+    </div>
+</div>
+
 <script>
     (function() {
         "use strict";
 
         // ---------- 数据 ----------
-        const MY_NAME = '我';
-        const LOVER_NAME = '星野';
+        const LOVER_DEFAULT_NAME = '星野';
+        const MY_DEFAULT_NAME = '我';
+
+        // 用户配置
+        let myName = MY_DEFAULT_NAME;
+        let myAvatar = '🧸';
+        let loverName = LOVER_DEFAULT_NAME;
+        let loverAvatar = '🌸';
 
         let messages = [];
         let libraryCards = [];
 
         const DEFAULT_MESSAGES = [
-            { id: Date.now()+1, sender: LOVER_NAME, word: '🌸 浅樱', meaning: '「春日初绽，是见到你时的心跳」', tag: '🌸 约定', time: new Date(Date.now()-3600000).toLocaleTimeString('zh-CN',{hour:'2-digit',minute:'2-digit'}) },
-            { id: Date.now()+2, sender: MY_NAME, word: '🌙 月白', meaning: '「如月光般温柔，只为你一人明亮」', tag: '✨ 专属', time: new Date(Date.now()-1800000).toLocaleTimeString('zh-CN',{hour:'2-digit',minute:'2-digit'}) },
-            { id: Date.now()+3, sender: LOVER_NAME, word: '💫 星迹', meaning: '「沿着光年的轨迹，抵达你的身边」', tag: '🌠 永恒', time: new Date(Date.now()-600000).toLocaleTimeString('zh-CN',{hour:'2-digit',minute:'2-digit'}) }
+            { id: Date.now()+1, sender: LOVER_DEFAULT_NAME, word: '🌸 浅樱', meaning: '「春日初绽，是见到你时的心跳」', tag: '🌸 约定', time: new Date(Date.now()-3600000).toLocaleTimeString('zh-CN',{hour:'2-digit',minute:'2-digit'}) },
+            { id: Date.now()+2, sender: MY_DEFAULT_NAME, word: '🌙 月白', meaning: '「如月光般温柔，只为你一人明亮」', tag: '✨ 专属', time: new Date(Date.now()-1800000).toLocaleTimeString('zh-CN',{hour:'2-digit',minute:'2-digit'}) },
+            { id: Date.now()+3, sender: LOVER_DEFAULT_NAME, word: '💫 星迹', meaning: '「沿着光年的轨迹，抵达你的身边」', tag: '🌠 永恒', time: new Date(Date.now()-600000).toLocaleTimeString('zh-CN',{hour:'2-digit',minute:'2-digit'}) }
         ];
 
         const DEFAULT_LIBRARY = [
@@ -147,6 +204,18 @@
 
         // ---------- 存储 ----------
         function loadData() {
+            // 用户配置
+            const storedConfig = localStorage.getItem('chat_config_v2');
+            if (storedConfig) {
+                try {
+                    const cfg = JSON.parse(storedConfig);
+                    if (cfg.myName) myName = cfg.myName;
+                    if (cfg.myAvatar) myAvatar = cfg.myAvatar;
+                    if (cfg.loverName) loverName = cfg.loverName;
+                    if (cfg.loverAvatar) loverAvatar = cfg.loverAvatar;
+                } catch(e) {}
+            }
+
             const storedMsg = localStorage.getItem('chat_messages_v2');
             if (storedMsg) {
                 try { const p = JSON.parse(storedMsg); if (Array.isArray(p) && p.length) { messages = p; } }
@@ -168,6 +237,7 @@
         }
 
         function saveAll() {
+            localStorage.setItem('chat_config_v2', JSON.stringify({ myName, myAvatar, loverName, loverAvatar }));
             localStorage.setItem('chat_messages_v2', JSON.stringify(messages));
             localStorage.setItem('chat_library_v2', JSON.stringify(libraryCards));
         }
@@ -189,6 +259,35 @@
         const addEmojiBtn = document.getElementById('addEmojiBtn');
         const addKaomojiBtn = document.getElementById('addKaomojiBtn');
 
+        const myAvatarEl = document.getElementById('myAvatar');
+        const loverAvatarEl = document.getElementById('loverAvatar');
+        const myNameDisplay = document.getElementById('myNameDisplay');
+        const myAvatarWrapper = document.getElementById('myAvatarWrapper');
+        const loverAvatarWrapper = document.getElementById('loverAvatarWrapper');
+        const headerInfo = document.getElementById('headerInfo');
+
+        const editModal = document.getElementById('editModal');
+        const modalTitle = document.getElementById('modalTitle');
+        const editNameInput = document.getElementById('editNameInput');
+        const emojiGrid = document.getElementById('emojiGrid');
+        const modalCancelBtn = document.getElementById('modalCancelBtn');
+        const modalSaveBtn = document.getElementById('modalSaveBtn');
+
+        // ---------- 更新 UI 头像和昵称 ----------
+        function updateUI() {
+            myAvatarEl.textContent = myAvatar;
+            loverAvatarEl.textContent = loverAvatar;
+            // 显示昵称 (顶部)
+            myNameDisplay.innerHTML = `${myName} <span class="edit-hint">✎</span>`;
+            // 更新消息中的发送者名称 (已存储的消息不自动更新，但新消息会使用新名称)
+            // 重新渲染消息
+            renderMessages();
+            // 更新字卡库
+            renderLibrary();
+            // 更新 header 状态
+            document.querySelector('.chat-header .info .status').textContent = `💕 与 ${loverName} · 字卡物语`;
+        }
+
         // ---------- 渲染消息 ----------
         function renderMessages() {
             container.innerHTML = '';
@@ -201,12 +300,12 @@
             }
             const sorted = [...messages].sort((a,b) => a.id - b.id);
             sorted.forEach(msg => {
-                const isSelf = (msg.sender === MY_NAME);
+                const isSelf = (msg.sender === myName);
                 const msgDiv = document.createElement('div');
                 msgDiv.className = `message ${isSelf ? 'self' : 'other'}`;
                 const avatar = document.createElement('div');
                 avatar.className = 'avatar-small';
-                avatar.textContent = isSelf ? '🧸' : '🌸';
+                avatar.textContent = isSelf ? myAvatar : loverAvatar;
                 const bubble = document.createElement('div');
                 bubble.className = 'bubble';
                 const wordSpan = document.createElement('div');
@@ -254,7 +353,6 @@
                 libraryList.appendChild(item);
             });
 
-            // 删除事件 (直接绑定)
             document.querySelectorAll('.library-item .del-btn').forEach(btn => {
                 btn.addEventListener('click', function(e) {
                     e.stopPropagation();
@@ -269,7 +367,6 @@
                 });
             });
 
-            // 点击字卡快速发送 (委托)
             libraryList.querySelectorAll('.library-item').forEach(item => {
                 item.addEventListener('click', function(e) {
                     if (e.target.classList.contains('del-btn')) return;
@@ -290,7 +387,7 @@
             }
             const newMsg = {
                 id: generateId(),
-                sender: MY_NAME,
+                sender: myName,
                 word: word.trim(),
                 meaning: meaning ? meaning.trim() : '',
                 tag: '💕 此刻',
@@ -311,8 +408,8 @@
             if (!libraryCards || libraryCards.length === 0) {
                 const fallback = { word: '🌸 花见', meaning: '与你相遇', tag: '🌸' };
                 setTimeout(() => {
-                    if (messages.length > 0 && messages[messages.length-1].sender === LOVER_NAME) return;
-                    const reply = { id: generateId()+1, sender: LOVER_NAME, word: fallback.word, meaning: fallback.meaning, tag: fallback.tag + ' ✦', time: getCurrentTime() };
+                    if (messages.length > 0 && messages[messages.length-1].sender === loverName) return;
+                    const reply = { id: generateId()+1, sender: loverName, word: fallback.word, meaning: fallback.meaning, tag: fallback.tag + ' ✦', time: getCurrentTime() };
                     messages.push(reply);
                     saveAll();
                     renderMessages();
@@ -322,13 +419,13 @@
 
             const delay = 1500 + Math.random() * 2500;
             setTimeout(() => {
-                if (messages.length > 0 && messages[messages.length-1].sender === LOVER_NAME) return;
+                if (messages.length > 0 && messages[messages.length-1].sender === loverName) return;
                 const randomIndex = Math.floor(Math.random() * libraryCards.length);
                 const card = libraryCards[randomIndex];
                 if (!card) return;
                 const reply = {
                     id: generateId()+1,
-                    sender: LOVER_NAME,
+                    sender: loverName,
                     word: card.word || '🌸',
                     meaning: card.meaning || '',
                     tag: (card.tag || '❤️') + ' ✦',
@@ -355,98 +452,36 @@
             return true;
         }
 
-        // ---------- 事件绑定 ----------
-        function init() {
-            loadData();
-            renderMessages();
-            renderLibrary();
+        // ---------- 编辑弹窗 ----------
+        let editingTarget = 'my'; // 'my' or 'lover'
 
-            // 发送按钮
-            sendBtn.addEventListener('click', function() {
-                sendCardFromInput(wordInput.value, meaningInput.value);
-            });
-
-            // 回车发送
-            wordInput.addEventListener('keydown', function(e) {
-                if (e.key === 'Enter') {
-                    e.preventDefault();
-                    if (this.value.trim()) {
-                        sendCardFromInput(this.value, meaningInput.value);
-                    } else {
-                        meaningInput.focus();
-                    }
-                }
-            });
-            meaningInput.addEventListener('keydown', function(e) {
-                if (e.key === 'Enter') {
-                    e.preventDefault();
-                    if (wordInput.value.trim()) {
-                        sendCardFromInput(wordInput.value, this.value);
-                    } else {
-                        wordInput.focus();
-                    }
-                }
-            });
-
-            // 字卡库面板切换
-            toggleBtn.addEventListener('click', function() {
-                libraryPanel.classList.toggle('open');
-                if (libraryPanel.classList.contains('open')) {
-                    renderLibrary();
-                }
-            });
-
-            // 添加到库
-            addLibraryBtn.addEventListener('click', function() {
-                const word = newWordInput.value;
-                const meaning = newMeaningInput.value;
-                if (addToLibrary(word, meaning)) {
-                    newWordInput.value = '';
-                    newMeaningInput.value = '';
-                    newWordInput.focus();
-                } else {
-                    newWordInput.focus();
-                }
-            });
-
-            // 快速添加表情
-            addEmojiBtn.addEventListener('click', function() {
-                const emojis = ['😊', '😂', '🥰', '😍', '🤗', '✨', '🌟', '💖', '🌸', '🍀', '🎵', '🌈', '🔥', '⭐', '🎉', '💯'];
-                const rand = emojis[Math.floor(Math.random() * emojis.length)];
-                newWordInput.value = rand + ' 表情';
-                newMeaningInput.value = ' (◕‿◕)♡ ';
-                addLibraryBtn.click();
-            });
-
-            // 快速添加颜文字
-            addKaomojiBtn.addEventListener('click', function() {
-                const kaomoji = ['(＾▽＾)', '(≧∇≦)', '(◕‿◕)♡', '✧*｡٩(ˊᗜˋ*)و✧*｡', '(っ˘ω˘ς)', '♪(´▽｀)', '(｡•̀ᴗ-)✧', '٩(◕‿◕｡)۶', '(◠‿◠✿)', '♡(◕ᴗ◕✿)'];
-                const rand = kaomoji[Math.floor(Math.random() * kaomoji.length)];
-                newWordInput.value = '✨ 颜文字';
-                newMeaningInput.value = rand;
-                addLibraryBtn.click();
-            });
-
-            // 双击顶部重置聊天 (保留字卡库)
-            document.querySelector('.chat-header').addEventListener('dblclick', function() {
-                if (confirm('重置聊天记录？ (保留字卡库)')) {
-                    messages = DEFAULT_MESSAGES.map(m => ({ ...m }));
-                    saveAll();
-                    renderMessages();
-                }
-            });
-
-            console.log('💌 字卡聊天室 v2 已启动，所有按钮功能正常');
-            console.log('📚 点击字卡库中的卡片即可快速发送');
+        function openEditModal(target) {
+            editingTarget = target;
+            if (target === 'my') {
+                modalTitle.textContent = '✎ 编辑我的信息';
+                editNameInput.value = myName;
+                // 高亮当前头像
+                document.querySelectorAll('#emojiGrid span').forEach(el => {
+                    el.classList.toggle('selected', el.textContent === myAvatar);
+                });
+            } else {
+                modalTitle.textContent = `✎ 编辑 ${loverName} 的信息`;
+                editNameInput.value = loverName;
+                document.querySelectorAll('#emojiGrid span').forEach(el => {
+                    el.classList.toggle('selected', el.textContent === loverAvatar);
+                });
+            }
+            editModal.classList.add('active');
+            editNameInput.focus();
+            editNameInput.select();
         }
 
-        // 页面加载完成后初始化
-        if (document.readyState === 'loading') {
-            document.addEventListener('DOMContentLoaded', init);
-        } else {
-            init();
+        function closeEditModal() {
+            editModal.classList.remove('active');
         }
-    })();
-</script>
-</body>
-</html>
+
+        function saveEditModal() {
+            const newName = editNameInput.value.trim() || (editingTarget === 'my' ? MY_DEFAULT_NAME : LOVER_DEFAULT_NAME);
+            // 获取选中的 emoji
+            const selected = document.querySelector('#emojiGrid span.selected');
+            const newAvatar = selected ? selected.text
