@@ -486,4 +486,124 @@
             saveAll();
             updateUI();
             closeEditModal();
-       
+        }
+
+        // ---------- 事件绑定 ----------
+        function init() {
+            loadData();
+            updateUI();
+
+            // 发送按钮
+            sendBtn.addEventListener('click', function() {
+                sendCardFromInput(wordInput.value, meaningInput.value);
+            });
+
+            // 回车发送
+            wordInput.addEventListener('keydown', function(e) {
+                if (e.key === 'Enter') {
+                    e.preventDefault();
+                    if (this.value.trim()) {
+                        sendCardFromInput(this.value, meaningInput.value);
+                    } else {
+                        meaningInput.focus();
+                    }
+                }
+            });
+            meaningInput.addEventListener('keydown', function(e) {
+                if (e.key === 'Enter') {
+                    e.preventDefault();
+                    if (wordInput.value.trim()) {
+                        sendCardFromInput(wordInput.value, this.value);
+                    } else {
+                        wordInput.focus();
+                    }
+                }
+            });
+
+            // 字卡库面板切换
+            toggleBtn.addEventListener('click', function(e) {
+                e.stopPropagation();
+                libraryPanel.classList.toggle('open');
+                if (libraryPanel.classList.contains('open')) {
+                    renderLibrary();
+                }
+            });
+
+            // 添加到库
+            addLibraryBtn.addEventListener('click', function() {
+                const word = newWordInput.value;
+                const meaning = newMeaningInput.value;
+                if (addToLibrary(word, meaning)) {
+                    newWordInput.value = '';
+                    newMeaningInput.value = '';
+                    newWordInput.focus();
+                } else {
+                    newWordInput.focus();
+                }
+            });
+
+            // 快速添加表情
+            addEmojiBtn.addEventListener('click', function() {
+                const emojis = ['😊', '😂', '🥰', '😍', '🤗', '✨', '🌟', '💖', '🌸', '🍀', '🎵', '🌈', '🔥', '⭐', '🎉', '💯'];
+                const rand = emojis[Math.floor(Math.random() * emojis.length)];
+                newWordInput.value = rand + ' 表情';
+                newMeaningInput.value = ' (◕‿◕)♡ ';
+                addLibraryBtn.click();
+            });
+
+            // 快速添加颜文字
+            addKaomojiBtn.addEventListener('click', function() {
+                const kaomoji = ['(＾▽＾)', '(≧∇≦)', '(◕‿◕)♡', '✧*｡٩(ˊᗜˋ*)و✧*｡', '(っ˘ω˘ς)', '♪(´▽｀)', '(｡•̀ᴗ-)✧', '٩(◕‿◕｡)۶', '(◠‿◠✿)', '♡(◕ᴗ◕✿)'];
+                const rand = kaomoji[Math.floor(Math.random() * kaomoji.length)];
+                newWordInput.value = '✨ 颜文字';
+                newMeaningInput.value = rand;
+                addLibraryBtn.click();
+            });
+
+            // 头像/昵称点击编辑
+            myAvatarWrapper.addEventListener('click', function() { openEditModal('my'); });
+            loverAvatarWrapper.addEventListener('click', function() { openEditModal('lover'); });
+            headerInfo.addEventListener('click', function() { openEditModal('my'); });
+
+            // 弹窗 emoji 选择
+            emojiGrid.addEventListener('click', function(e) {
+                if (e.target.tagName === 'SPAN') {
+                    document.querySelectorAll('#emojiGrid span').forEach(el => el.classList.remove('selected'));
+                    e.target.classList.add('selected');
+                }
+            });
+
+            // 弹窗按钮
+            modalCancelBtn.addEventListener('click', closeEditModal);
+            modalSaveBtn.addEventListener('click', saveEditModal);
+            editModal.addEventListener('click', function(e) {
+                if (e.target === editModal) closeEditModal();
+            });
+            document.addEventListener('keydown', function(e) {
+                if (e.key === 'Escape' && editModal.classList.contains('active')) closeEditModal();
+                if (e.key === 'Enter' && editModal.classList.contains('active')) saveEditModal();
+            });
+
+            // 双击顶部重置聊天 (保留字卡库)
+            document.querySelector('.chat-header').addEventListener('dblclick', function() {
+                if (confirm('重置聊天记录？ (保留字卡库和头像昵称)')) {
+                    messages = DEFAULT_MESSAGES.map(m => ({ ...m }));
+                    saveAll();
+                    renderMessages();
+                }
+            });
+
+            console.log('💌 字卡聊天室 v3 已启动，所有功能正常');
+            console.log('📌 点击头像或昵称可修改');
+            console.log('📚 点击字卡库中的卡片快速发送');
+        }
+
+        if (document.readyState === 'loading') {
+            document.addEventListener('DOMContentLoaded', init);
+        } else {
+            init();
+        }
+    })();
+</script>
+</body>
+</html>
