@@ -45,6 +45,8 @@
         .btn:active { transform: scale(0.94); }
         .btn-primary { background: #f0d7e4; border-color: #ecc4d6; }
         .btn-sm { padding: 6px 12px; font-size: 0.75rem; }
+        .btn-success { background: #d4e0d4; border-color: #b8c8b8; }
+        .btn-success:hover { background: #c8d8c8; }
         .library-panel { background: rgba(255,245,250,0.95); backdrop-filter: blur(8px); border-top: 2px solid #f5d6e2; padding: 12px 16px 16px; max-height: 260px; overflow-y: auto; flex-shrink: 0; display: none; transition: 0.3s; }
         .library-panel.open { display: block; }
         .library-panel::-webkit-scrollbar { width: 3px; }
@@ -59,6 +61,9 @@
         .library-add-area { display: flex; gap: 6px; flex-wrap: wrap; margin-top: 6px; align-items: center; }
         .library-add-area input { flex: 1 1 100px; padding: 6px 12px; border-radius: 40px; border: 1px solid #f0c8da; background: rgba(255,255,255,0.6); font-size: 0.8rem; outline: none; min-width: 60px; }
         .library-add-area input:focus { border-color: #d696b5; }
+        .batch-area { display: flex; gap: 6px; flex-wrap: wrap; margin-top: 6px; align-items: center; width: 100%; }
+        .batch-area textarea { flex: 1; padding: 8px 12px; border-radius: 16px; border: 1px solid #f0c8da; background: rgba(255,255,255,0.6); font-size: 0.8rem; outline: none; resize: vertical; min-height: 50px; font-family: inherit; }
+        .batch-area textarea:focus { border-color: #d696b5; }
         .empty-chat { text-align: center; padding: 30px 10px; color: #a05a7a; opacity: 0.6; font-size: 0.9rem; }
         .chat-footer { padding: 4px 12px 8px; text-align: center; font-size: 0.55rem; color: #b2829b; letter-spacing: 0.5px; border-top: 1px solid rgba(220,160,185,0.1); background: rgba(255,240,248,0.1); display: flex; justify-content: center; gap: 10px; flex-shrink: 0; }
         .chat-footer span { background: rgba(255,215,225,0.1); padding: 0 8px; border-radius: 30px; }
@@ -76,7 +81,9 @@
         .modal-box .field .emoji-grid span.selected { background: #f0d7e4; border-color: #d696b5; }
         .modal-box .btn-row { display: flex; gap: 10px; margin-top: 16px; justify-content: flex-end; }
         .modal-box .btn-row .btn { flex: 1; justify-content: center; }
-        @media (max-width: 480px) { .chat-app { border-radius: 28px; height: 90vh; max-height: 90vh; } .chat-header { padding: 10px 12px 8px; } .chat-header .avatar-wrapper .avatar { width: 40px; height: 40px; font-size: 1.6rem; } .chat-messages { padding: 10px 8px 4px; gap: 10px; } .message { max-width: 92%; } .chat-input-area { padding: 8px 10px 12px; gap: 4px; } .chat-input-area .input-group { min-width: 120px; flex-wrap: wrap; } .chat-input-area input { padding: 8px 10px; font-size: 0.8rem; min-width: 50px; } .btn { padding: 8px 12px; font-size: 0.8rem; } .library-panel { padding: 10px 12px; max-height: 200px; } .modal-box { padding: 20px 16px; } }
+        .toast { position: fixed; bottom: 100px; left: 50%; transform: translateX(-50%); background: rgba(60,40,55,0.85); color: #fff; padding: 8px 24px; border-radius: 40px; font-size: 0.85rem; backdrop-filter: blur(6px); z-index: 2000; opacity: 0; transition: opacity 0.3s; pointer-events: none; }
+        .toast.show { opacity: 1; }
+        @media (max-width: 480px) { .chat-app { border-radius: 28px; height: 90vh; max-height: 90vh; } .chat-header { padding: 10px 12px 8px; } .chat-header .avatar-wrapper .avatar { width: 40px; height: 40px; font-size: 1.6rem; } .chat-messages { padding: 10px 8px 4px; gap: 10px; } .message { max-width: 92%; } .chat-input-area { padding: 8px 10px 12px; gap: 4px; } .chat-input-area .input-group { min-width: 120px; flex-wrap: wrap; } .chat-input-area input { padding: 8px 10px; font-size: 0.8rem; min-width: 50px; } .btn { padding: 8px 12px; font-size: 0.8rem; } .library-panel { padding: 10px 12px; max-height: 200px; } .modal-box { padding: 20px 16px; } .batch-area textarea { min-height: 40px; font-size: 0.75rem; } }
     </style>
 </head>
 <body>
@@ -111,6 +118,7 @@
             <div class="library-actions">
                 <button class="btn btn-sm btn-primary" id="addEmojiBtn">➕ 表情</button>
                 <button class="btn btn-sm btn-primary" id="addKaomojiBtn">➕ 颜文字</button>
+                <button class="btn btn-sm btn-success" id="batchImportBtn">📥 批量导入</button>
             </div>
         </div>
         <div id="libraryList" style="display: flex; flex-wrap: wrap; gap: 2px 6px; padding: 2px 0;"></div>
@@ -118,6 +126,15 @@
             <input type="text" id="newLibraryWord" placeholder="关键词 (如 月白)">
             <input type="text" id="newLibraryMeaning" placeholder="诠释 / 表情 / 颜文字">
             <button class="btn btn-sm" id="addLibraryBtn">➕ 添加到库</button>
+        </div>
+        <!-- 批量导入区域 -->
+        <div class="batch-area" id="batchArea" style="display:none;">
+            <textarea id="batchInput" placeholder="每行一张字卡，格式：关键词 | 诠释 | 标签&#10;例如：&#10;🌸 浅樱 | 春日初绽 | 🌸&#10;🌙 月白 | 温柔如月 | ✨"></textarea>
+            <div style="display:flex; gap:6px; width:100%;">
+                <button class="btn btn-sm btn-success" id="batchConfirmBtn">✅ 确认导入</button>
+                <button class="btn btn-sm" id="batchCancelBtn">取消</button>
+                <button class="btn btn-sm btn-primary" id="batchTemplateBtn">📋 示例模板</button>
+            </div>
         </div>
         <div style="margin-top: 6px; font-size: 0.7rem; color: #b2829b; text-align: right;">点击字卡快速发送 · 点击 ❌ 删除</div>
     </div>
@@ -162,6 +179,9 @@
         </div>
     </div>
 </div>
+
+<!-- Toast 提示 -->
+<div class="toast" id="toast"></div>
 
 <script>
     (function() {
@@ -242,6 +262,15 @@
         function generateId() { return Date.now() + Math.floor(Math.random() * 10000); }
         function getCurrentTime() { return new Date().toLocaleTimeString('zh-CN', { hour:'2-digit', minute:'2-digit' }); }
 
+        // ---------- Toast ----------
+        function showToast(msg) {
+            const toast = document.getElementById('toast');
+            toast.textContent = msg;
+            toast.classList.add('show');
+            clearTimeout(toast._timer);
+            toast._timer = setTimeout(() => toast.classList.remove('show'), 2200);
+        }
+
         // ---------- DOM 引用 ----------
         const container = document.getElementById('messageContainer');
         const libraryList = document.getElementById('libraryList');
@@ -255,6 +284,12 @@
         const newMeaningInput = document.getElementById('newLibraryMeaning');
         const addEmojiBtn = document.getElementById('addEmojiBtn');
         const addKaomojiBtn = document.getElementById('addKaomojiBtn');
+        const batchImportBtn = document.getElementById('batchImportBtn');
+        const batchArea = document.getElementById('batchArea');
+        const batchInput = document.getElementById('batchInput');
+        const batchConfirmBtn = document.getElementById('batchConfirmBtn');
+        const batchCancelBtn = document.getElementById('batchCancelBtn');
+        const batchTemplateBtn = document.getElementById('batchTemplateBtn');
 
         const myAvatarEl = document.getElementById('myAvatar');
         const loverAvatarEl = document.getElementById('loverAvatar');
@@ -270,7 +305,7 @@
         const modalCancelBtn = document.getElementById('modalCancelBtn');
         const modalSaveBtn = document.getElementById('modalSaveBtn');
 
-        // ---------- 更新 UI 头像和昵称 ----------
+        // ---------- 更新 UI ----------
         function updateUI() {
             myAvatarEl.textContent = myAvatar;
             loverAvatarEl.textContent = loverAvatar;
@@ -354,6 +389,7 @@
                             libraryCards.splice(idx, 1);
                             saveAll();
                             renderLibrary();
+                            showToast('已删除字卡');
                         }
                     }
                 });
@@ -398,212 +434,4 @@
         // ---------- 模拟爱人回复 ----------
         function simulateLoverReply() {
             if (!libraryCards || libraryCards.length === 0) {
-                const fallback = { word: '🌸 花见', meaning: '与你相遇', tag: '🌸' };
-                setTimeout(() => {
-                    if (messages.length > 0 && messages[messages.length-1].sender === loverName) return;
-                    const reply = { id: generateId()+1, sender: loverName, word: fallback.word, meaning: fallback.meaning, tag: fallback.tag + ' ✦', time: getCurrentTime() };
-                    messages.push(reply);
-                    saveAll();
-                    renderMessages();
-                }, 1500 + Math.random()*2000);
-                return;
-            }
-
-            const delay = 1500 + Math.random() * 2500;
-            setTimeout(() => {
-                if (messages.length > 0 && messages[messages.length-1].sender === loverName) return;
-                const randomIndex = Math.floor(Math.random() * libraryCards.length);
-                const card = libraryCards[randomIndex];
-                if (!card) return;
-                const reply = {
-                    id: generateId()+1,
-                    sender: loverName,
-                    word: card.word || '🌸',
-                    meaning: card.meaning || '',
-                    tag: (card.tag || '❤️') + ' ✦',
-                    time: getCurrentTime()
-                };
-                messages.push(reply);
-                saveAll();
-                renderMessages();
-            }, delay);
-        }
-
-        // ---------- 添加到字卡库 ----------
-        function addToLibrary(word, meaning, tag) {
-            word = word.trim();
-            if (!word) return false;
-            const newCard = {
-                word: word,
-                meaning: (meaning || '').trim(),
-                tag: (tag || '❤️').trim()
-            };
-            libraryCards.push(newCard);
-            saveAll();
-            renderLibrary();
-            return true;
-        }
-
-        // ---------- 编辑弹窗 ----------
-        let editingTarget = 'my';
-
-        function openEditModal(target) {
-            editingTarget = target;
-            if (target === 'my') {
-                modalTitle.textContent = '✎ 编辑我的信息';
-                editNameInput.value = myName;
-                document.querySelectorAll('#emojiGrid span').forEach(el => {
-                    el.classList.toggle('selected', el.textContent === myAvatar);
-                });
-            } else {
-                modalTitle.textContent = `✎ 编辑 ${loverName} 的信息`;
-                editNameInput.value = loverName;
-                document.querySelectorAll('#emojiGrid span').forEach(el => {
-                    el.classList.toggle('selected', el.textContent === loverAvatar);
-                });
-            }
-            editModal.classList.add('active');
-            editNameInput.focus();
-            editNameInput.select();
-        }
-
-        function closeEditModal() {
-            editModal.classList.remove('active');
-        }
-
-        function saveEditModal() {
-            const newName = editNameInput.value.trim() || (editingTarget === 'my' ? MY_DEFAULT_NAME : LOVER_DEFAULT_NAME);
-            const selected = document.querySelector('#emojiGrid span.selected');
-            const newAvatar = selected ? selected.textContent : (editingTarget === 'my' ? '🧸' : '🌸');
-
-            if (editingTarget === 'my') {
-                myName = newName;
-                myAvatar = newAvatar;
-            } else {
-                loverName = newName;
-                loverAvatar = newAvatar;
-            }
-            saveAll();
-            updateUI();
-            closeEditModal();
-        }
-
-        // ---------- 事件绑定 ----------
-        function init() {
-            loadData();
-            updateUI();
-
-            // 发送按钮
-            sendBtn.addEventListener('click', function() {
-                sendCardFromInput(wordInput.value, meaningInput.value);
-            });
-
-            // 回车发送
-            wordInput.addEventListener('keydown', function(e) {
-                if (e.key === 'Enter') {
-                    e.preventDefault();
-                    if (this.value.trim()) {
-                        sendCardFromInput(this.value, meaningInput.value);
-                    } else {
-                        meaningInput.focus();
-                    }
-                }
-            });
-            meaningInput.addEventListener('keydown', function(e) {
-                if (e.key === 'Enter') {
-                    e.preventDefault();
-                    if (wordInput.value.trim()) {
-                        sendCardFromInput(wordInput.value, this.value);
-                    } else {
-                        wordInput.focus();
-                    }
-                }
-            });
-
-            // 字卡库面板切换
-            toggleBtn.addEventListener('click', function(e) {
-                e.stopPropagation();
-                libraryPanel.classList.toggle('open');
-                if (libraryPanel.classList.contains('open')) {
-                    renderLibrary();
-                }
-            });
-
-            // 添加到库
-            addLibraryBtn.addEventListener('click', function() {
-                const word = newWordInput.value;
-                const meaning = newMeaningInput.value;
-                if (addToLibrary(word, meaning)) {
-                    newWordInput.value = '';
-                    newMeaningInput.value = '';
-                    newWordInput.focus();
-                } else {
-                    newWordInput.focus();
-                }
-            });
-
-            // 快速添加表情
-            addEmojiBtn.addEventListener('click', function() {
-                const emojis = ['😊', '😂', '🥰', '😍', '🤗', '✨', '🌟', '💖', '🌸', '🍀', '🎵', '🌈', '🔥', '⭐', '🎉', '💯'];
-                const rand = emojis[Math.floor(Math.random() * emojis.length)];
-                newWordInput.value = rand + ' 表情';
-                newMeaningInput.value = ' (◕‿◕)♡ ';
-                addLibraryBtn.click();
-            });
-
-            // 快速添加颜文字
-            addKaomojiBtn.addEventListener('click', function() {
-                const kaomoji = ['(＾▽＾)', '(≧∇≦)', '(◕‿◕)♡', '✧*｡٩(ˊᗜˋ*)و✧*｡', '(っ˘ω˘ς)', '♪(´▽｀)', '(｡•̀ᴗ-)✧', '٩(◕‿◕｡)۶', '(◠‿◠✿)', '♡(◕ᴗ◕✿)'];
-                const rand = kaomoji[Math.floor(Math.random() * kaomoji.length)];
-                newWordInput.value = '✨ 颜文字';
-                newMeaningInput.value = rand;
-                addLibraryBtn.click();
-            });
-
-            // 头像/昵称点击编辑
-            myAvatarWrapper.addEventListener('click', function() { openEditModal('my'); });
-            loverAvatarWrapper.addEventListener('click', function() { openEditModal('lover'); });
-            headerInfo.addEventListener('click', function() { openEditModal('my'); });
-
-            // 弹窗 emoji 选择
-            emojiGrid.addEventListener('click', function(e) {
-                if (e.target.tagName === 'SPAN') {
-                    document.querySelectorAll('#emojiGrid span').forEach(el => el.classList.remove('selected'));
-                    e.target.classList.add('selected');
-                }
-            });
-
-            // 弹窗按钮
-            modalCancelBtn.addEventListener('click', closeEditModal);
-            modalSaveBtn.addEventListener('click', saveEditModal);
-            editModal.addEventListener('click', function(e) {
-                if (e.target === editModal) closeEditModal();
-            });
-            document.addEventListener('keydown', function(e) {
-                if (e.key === 'Escape' && editModal.classList.contains('active')) closeEditModal();
-                if (e.key === 'Enter' && editModal.classList.contains('active')) saveEditModal();
-            });
-
-            // 双击顶部重置聊天 (保留字卡库)
-            document.querySelector('.chat-header').addEventListener('dblclick', function() {
-                if (confirm('重置聊天记录？ (保留字卡库和头像昵称)')) {
-                    messages = DEFAULT_MESSAGES.map(m => ({ ...m }));
-                    saveAll();
-                    renderMessages();
-                }
-            });
-
-            console.log('💌 字卡聊天室 v3 已启动，所有功能正常');
-            console.log('📌 点击头像或昵称可修改');
-            console.log('📚 点击字卡库中的卡片快速发送');
-        }
-
-        if (document.readyState === 'loading') {
-            document.addEventListener('DOMContentLoaded', init);
-        } else {
-            init();
-        }
-    })();
-</script>
-</body>
-</html>
+                const fallback = { word: '🌸 花见', meaning: '与你相遇', tag:
