@@ -47,11 +47,6 @@
         body.night .message .avatar-small { border-color: #5a4a6a; background: #3a3a5a; }
         .message.self .avatar-small { background: #dbb6cc; }
         body.night .message.self .avatar-small { background: #5a4a6a; }
-        .message .bubble .msg-type { font-size: 0.55rem; color: #b08599; margin-bottom: 2px; font-weight: 300; }
-        body.night .message .bubble .msg-type { color: #7a6a8a; }
-        .message .bubble .redpacket { background: linear-gradient(135deg, #ff6b6b, #ee5a24); color: #fff; padding: 6px 14px; border-radius: 10px; display: inline-block; font-weight: 500; cursor: pointer; border: 1px solid #d63031; }
-        .message .bubble .drawing-canvas { border: 1px solid #f0c8da; border-radius: 10px; background: #fff; max-width: 150px; max-height: 100px; cursor: pointer; }
-        body.night .message .bubble .drawing-canvas { border-color: #4a4a6a; background: #2a2a4a; }
         .chat-input-area { padding: 6px 10px 10px; background: rgba(255,240,248,0.4); backdrop-filter: blur(6px); border-top: 1px solid #f5d6e2; display: flex; gap: 4px; align-items: center; flex-shrink: 0; flex-wrap: wrap; transition: background 0.3s, border-color 0.3s; }
         body.night .chat-input-area { background: rgba(40,40,65,0.4); border-color: #4a4a6a; }
         .chat-input-area .input-group { display: flex; flex: 1; gap: 4px; min-width: 100px; }
@@ -68,13 +63,14 @@
         body.night .btn-primary { background: #5a4a7a; border-color: #6a5a8a; }
         .btn-success { background: #d4e0d4; border-color: #b8c8b8; }
         body.night .btn-success { background: #4a6a4a; border-color: #5a7a5a; }
-        .btn-danger { background: #f0c8c8; border-color: #e0a8a8; }
-        body.night .btn-danger { background: #6a4a4a; border-color: #8a5a5a; }
         .btn-sm { padding: 3px 8px; font-size: 0.65rem; }
         .btn-xs { padding: 2px 6px; font-size: 0.55rem; }
-        .library-panel { background: rgba(255,245,250,0.95); backdrop-filter: blur(8px); border-top: 2px solid #f5d6e2; padding: 8px 12px 12px; max-height: 180px; overflow-y: auto; flex-shrink: 0; display: none; transition: 0.3s; }
+        .library-panel { background: rgba(255,245,250,0.95); backdrop-filter: blur(8px); border-top: 2px solid #f5d6e2; padding: 8px 12px 12px; max-height: 260px; overflow-y: auto; flex-shrink: 0; display: none; transition: 0.3s; }
         body.night .library-panel { background: rgba(30,30,50,0.95); border-color: #4a4a6a; }
         .library-panel.open { display: block; }
+        .library-panel::-webkit-scrollbar { width: 3px; }
+        .library-panel::-webkit-scrollbar-thumb { background: #dbb6cc; border-radius: 20px; }
+        body.night .library-panel::-webkit-scrollbar-thumb { background: #5a4a6a; }
         .library-item { background: rgba(255,240,248,0.4); border-radius: 40px; padding: 3px 8px 3px 12px; display: inline-flex; align-items: center; gap: 4px; margin: 2px 3px 2px 0; border: 1px solid #f0d0df; font-size: 0.7rem; cursor: pointer; transition: 0.15s; }
         body.night .library-item { background: rgba(50,50,75,0.4); border-color: #4a4a6a; color: #d0c6d9; }
         .library-item:hover { background: #ffeef4; }
@@ -94,7 +90,7 @@
         body.night .chat-footer { color: #7a6a8a; border-color: #3a3a5a; background: rgba(30,30,50,0.1); }
         .modal-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.3); backdrop-filter: blur(4px); display: none; align-items: center; justify-content: center; z-index: 1000; }
         .modal-overlay.active { display: flex; }
-        .modal-box { background: #fff8fa; border-radius: 24px; padding: 16px 18px 16px; max-width: 320px; width: 90%; box-shadow: 0 30px 60px rgba(80,40,60,0.3); border: 1px solid #f5d6e2; max-height: 90vh; overflow-y: auto; }
+        .modal-box { background: #fff8fa; border-radius: 24px; padding: 16px 18px 16px; max-width: 340px; width: 90%; box-shadow: 0 30px 60px rgba(80,40,60,0.3); border: 1px solid #f5d6e2; max-height: 90vh; overflow-y: auto; }
         body.night .modal-box { background: #2a2a4a; border-color: #4a4a6a; color: #d0c6d9; }
         .modal-box h3 { font-weight: 400; color: #3f2536; margin-bottom: 10px; font-size: 0.95rem; text-align: center; }
         body.night .modal-box h3 { color: #d0c6d9; }
@@ -103,40 +99,20 @@
         body.night .modal-box .field label { color: #9a8aaa; }
         .modal-box .field input, .modal-box .field select { width: 100%; padding: 6px 10px; border-radius: 40px; border: 1px solid #f0c8da; background: rgba(255,255,255,0.7); font-size: 0.85rem; outline: none; }
         body.night .modal-box .field input, body.night .modal-box .field select { border-color: #4a4a6a; background: rgba(50,50,75,0.7); color: #d0c6d9; }
-        .modal-box .field .emoji-grid { display: flex; flex-wrap: wrap; gap: 3px; margin-top: 3px; }
-        .modal-box .field .emoji-grid span { font-size: 1.4rem; cursor: pointer; padding: 2px 4px; border-radius: 14px; border: 2px solid transparent; }
-        .modal-box .field .emoji-grid span:hover { background: #f5d6e2; }
-        body.night .modal-box .field .emoji-grid span:hover { background: #4a3a5a; }
-        .modal-box .field .emoji-grid span.selected { background: #f0d7e4; border-color: #d696b5; }
-        body.night .modal-box .field .emoji-grid span.selected { background: #4a3a6a; border-color: #7a5a9a; }
+        .modal-box .field .char-grid { display: flex; flex-wrap: wrap; gap: 4px; max-height: 160px; overflow-y: auto; padding: 6px 4px; background: rgba(255,240,248,0.2); border-radius: 12px; border: 1px solid #f0c8da; }
+        body.night .modal-box .field .char-grid { background: rgba(40,40,65,0.2); border-color: #4a4a6a; }
+        .modal-box .field .char-grid span { font-size: 1.1rem; padding: 2px 6px; border-radius: 8px; cursor: pointer; transition: 0.15s; border: 1px solid transparent; }
+        .modal-box .field .char-grid span:hover { background: #f5d6e2; border-color: #d696b5; transform: scale(1.05); }
+        body.night .modal-box .field .char-grid span:hover { background: #4a3a5a; border-color: #7a5a9a; }
+        .modal-box .field .char-grid span.selected { background: #f0d7e4; border-color: #d696b5; }
+        body.night .modal-box .field .char-grid span.selected { background: #4a3a6a; border-color: #7a5a9a; }
+        .modal-box .field .char-grid span.added { opacity: 0.4; cursor: default; }
+        .modal-box .field .char-grid span.added:hover { transform: none; background: transparent; border-color: transparent; }
         .modal-box .btn-row { display: flex; gap: 6px; margin-top: 10px; }
         .modal-box .btn-row .btn { flex: 1; justify-content: center; }
         .toast { position: fixed; bottom: 70px; left: 50%; transform: translateX(-50%); background: rgba(60,40,55,0.85); color: #fff; padding: 5px 18px; border-radius: 40px; font-size: 0.75rem; backdrop-filter: blur(6px); z-index: 2000; opacity: 0; transition: opacity 0.3s; pointer-events: none; }
         .toast.show { opacity: 1; }
-        .call-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.5); backdrop-filter: blur(8px); display: none; align-items: center; justify-content: center; z-index: 1500; flex-direction: column; gap: 16px; }
-        .call-overlay.active { display: flex; }
-        .call-box { background: #fff8fa; border-radius: 32px; padding: 24px 32px; text-align: center; box-shadow: 0 30px 60px rgba(0,0,0,0.3); }
-        body.night .call-box { background: #2a2a4a; }
-        .call-box .call-avatar { font-size: 3rem; margin-bottom: 6px; }
-        .call-box .call-name { font-size: 1.1rem; color: #3f2536; }
-        body.night .call-box .call-name { color: #d0c6d9; }
-        .call-box .call-status { font-size: 0.7rem; color: #a05a7a; margin: 4px 0 12px; }
-        body.night .call-box .call-status { color: #8a7a9a; }
-        .call-box .call-btns { display: flex; gap: 16px; justify-content: center; }
-        .call-box .call-btns .btn { padding: 10px 20px; font-size: 1rem; border-radius: 50%; width: 52px; height: 52px; justify-content: center; }
-        .message .bubble .msg-actions { display: flex; gap: 4px; margin-top: 4px; flex-wrap: wrap; }
-        .message .bubble .msg-actions .btn { font-size: 0.5rem; padding: 1px 6px; }
-        .search-highlight { background: #ffd700; color: #1a1a2e; padding: 0 4px; border-radius: 4px; }
-        body.night .search-highlight { background: #ffd700; color: #1a1a2e; }
-        .pin-badge { background: #ff6b6b; color: #fff; font-size: 0.45rem; padding: 0 6px; border-radius: 20px; margin-left: 4px; }
-        .dnd-badge { background: #6b6b6b; color: #fff; font-size: 0.45rem; padding: 0 6px; border-radius: 20px; margin-left: 4px; }
-        .bg-controls { display: flex; gap: 4px; align-items: center; flex-wrap: wrap; }
-        .bg-controls input[type="color"] { width: 28px; height: 28px; border-radius: 50%; border: 2px solid #f0c8da; cursor: pointer; padding: 0; }
-        .bg-controls input[type="range"] { width: 60px; height: 4px; -webkit-appearance: none; background: #f0c8da; border-radius: 4px; outline: none; }
-        body.night .bg-controls input[type="range"] { background: #4a4a6a; }
-        .bg-controls input[type="range"]::-webkit-slider-thumb { -webkit-appearance: none; width: 14px; height: 14px; border-radius: 50%; background: #d696b5; cursor: pointer; }
-        body.night .bg-controls input[type="range"]::-webkit-slider-thumb { background: #7a5a9a; }
-        @media (max-width: 480px) { .chat-app { border-radius: 24px; height: 90vh; max-height: 90vh; } .chat-header { padding: 6px 8px 4px; } .chat-header .avatar-wrapper .avatar { width: 30px; height: 30px; font-size: 1.1rem; } .chat-header .action-icon { font-size: 0.85rem; padding: 2px 4px; } .chat-messages { padding: 6px 6px 2px; gap: 6px; } .message { max-width: 94%; } .chat-input-area { padding: 4px 6px 8px; gap: 3px; } .chat-input-area .input-group { min-width: 80px; flex-wrap: wrap; } .chat-input-area input { padding: 4px 8px; font-size: 0.7rem; min-width: 30px; } .btn { padding: 4px 8px; font-size: 0.65rem; } .library-panel { padding: 6px 8px; max-height: 140px; } .modal-box { padding: 12px 14px; } .call-box { padding: 16px 20px; } .call-box .call-btns .btn { width: 44px; height: 44px; padding: 6px; font-size: 0.9rem; } .bg-controls input[type="color"] { width: 22px; height: 22px; } .bg-controls input[type="range"] { width: 40px; } }
+        @media (max-width: 480px) { .chat-app { border-radius: 24px; height: 90vh; max-height: 90vh; } .chat-header { padding: 6px 8px 4px; } .chat-header .avatar-wrapper .avatar { width: 30px; height: 30px; font-size: 1.1rem; } .chat-header .action-icon { font-size: 0.85rem; padding: 2px 4px; } .chat-messages { padding: 6px 6px 2px; gap: 6px; } .message { max-width: 94%; } .chat-input-area { padding: 4px 6px 8px; gap: 3px; } .chat-input-area .input-group { min-width: 80px; flex-wrap: wrap; } .chat-input-area input { padding: 4px 8px; font-size: 0.7rem; min-width: 30px; } .btn { padding: 4px 8px; font-size: 0.65rem; } .library-panel { padding: 6px 8px; max-height: 180px; } .modal-box { padding: 12px 14px; } .modal-box .field .char-grid { max-height: 120px; } .modal-box .field .char-grid span { font-size: 0.95rem; padding: 1px 4px; } }
     </style>
 </head>
 <body>
@@ -146,7 +122,7 @@
     <div class="chat-header">
         <div class="avatar-wrapper" id="myAvatarWrapper" title="点击修改我的头像">
             <div class="avatar" id="myAvatar">🧸</div>
-            <span class="badge" style="font-size:0.4rem;position:absolute;bottom:-2px;right:-2px;background:rgba(255,255,255,0.85);border-radius:30px;padding:0 4px;border:1px solid #f5d6e2;color:#7a4d64;">我</span>
+            <span style="font-size:0.4rem;position:absolute;bottom:-2px;right:-2px;background:rgba(255,255,255,0.85);border-radius:30px;padding:0 4px;border:1px solid #f5d6e2;color:#7a4d64;">我</span>
         </div>
         <div class="info" id="headerInfo">
             <div class="name" id="myNameDisplay">我 <span style="font-size:0.5rem;color:#b2829b;opacity:0.5;">✎</span></div>
@@ -154,7 +130,7 @@
         </div>
         <div class="avatar-wrapper" id="loverAvatarWrapper" title="点击修改星野的头像">
             <div class="avatar" id="loverAvatar">🌸</div>
-            <span class="badge" style="font-size:0.4rem;position:absolute;bottom:-2px;right:-2px;background:rgba(255,255,255,0.85);border-radius:30px;padding:0 4px;border:1px solid #f5d6e2;color:#7a4d64;">❤️</span>
+            <span style="font-size:0.4rem;position:absolute;bottom:-2px;right:-2px;background:rgba(255,255,255,0.85);border-radius:30px;padding:0 4px;border:1px solid #f5d6e2;color:#7a4d64;">❤️</span>
         </div>
         <div class="action-icons">
             <span class="action-icon" id="toggleLibraryBtn" title="字卡库">📚</span>
@@ -179,6 +155,7 @@
                 <button class="btn btn-sm btn-primary" id="addKaomojiBtn">➕ 颜文字</button>
                 <button class="btn btn-sm btn-success" id="batchImportBtn">📥 批量</button>
                 <button class="btn btn-sm" id="shuffleBtn">🎲 拼字卡</button>
+                <button class="btn btn-sm btn-primary" id="charLibBtn">🈶 汉字库</button>
             </div>
         </div>
         <div id="libraryList" style="display:flex;flex-wrap:wrap;gap:2px 4px;padding:2px 0;"></div>
@@ -211,6 +188,7 @@
         <span id="chatModeDisplay">💕 私聊</span>
         <span id="pinStatus"></span>
         <span id="dndStatus"></span>
+        <span id="libCount"></span>
     </div>
 </div>
 
@@ -223,9 +201,7 @@
         <div class="field"><label>🔆 背景透明度</label><input type="range" id="bgOpacitySlider" min="0.5" max="1" step="0.05" value="0.92"></div>
         <div class="field"><label>📌 置顶聊天</label><input type="checkbox" id="pinChatToggle"></div>
         <div class="field"><label>🔕 消息免打扰</label><input type="checkbox" id="dndToggle"></div>
-        <div class="field"><label>🤖 角色主动发消息</label>
-            <select id="autoReplyMode"><option value="off">关闭</option><option value="on" selected>开启</option></select>
-        </div>
+        <div class="field"><label>🤖 角色主动发消息</label><select id="autoReplyMode"><option value="off">关闭</option><option value="on" selected>开启</option></select></div>
         <div class="field"><label>📮 寄来信频率(秒)</label><input type="number" id="letterInterval" value="30" min="10" max="120"></div>
         <div class="btn-row"><button class="btn btn-primary" id="settingsSaveBtn">保存</button><button class="btn" id="settingsCloseBtn">关闭</button></div>
     </div>
@@ -246,8 +222,28 @@
     <div class="modal-box">
         <h3 id="modalTitle">✎ 编辑信息</h3>
         <div class="field"><label>昵称</label><input type="text" id="editNameInput" maxlength="20"></div>
-        <div class="field"><label>头像</label><div class="emoji-grid" id="emojiGrid"></div></div>
+        <div class="field"><label>头像</label><div class="emoji-grid" id="emojiGrid" style="display:flex;flex-wrap:wrap;gap:3px;margin-top:3px;"></div></div>
         <div class="btn-row"><button class="btn" id="modalCancelBtn">取消</button><button class="btn btn-primary" id="modalSaveBtn">保存</button></div>
+    </div>
+</div>
+
+<!-- 汉字库弹窗 (双方共享) -->
+<div class="modal-overlay" id="charLibModal">
+    <div class="modal-box">
+        <h3>🈶 常用汉字库 · 双方可用</h3>
+        <div class="field">
+            <label>点击汉字添加到字卡库 (双方共享)</label>
+            <div class="char-grid" id="charGrid"></div>
+        </div>
+        <div class="field" style="margin-top:8px;">
+            <label>或输入自定义汉字/词</label>
+            <div style="display:flex;gap:4px;flex-wrap:wrap;">
+                <input type="text" id="customCharInput" placeholder="输入汉字或词" style="flex:1;padding:4px 8px;border-radius:40px;border:1px solid #f0c8da;background:rgba(255,255,255,0.7);font-size:0.85rem;outline:none;">
+                <button class="btn btn-sm btn-primary" id="addCustomCharBtn">➕ 添加</button>
+            </div>
+        </div>
+        <div style="font-size:0.65rem;color:#b2829b;text-align:center;margin-top:6px;">💡 你添加的字卡，爱人也随时可以使用</div>
+        <div class="btn-row"><button class="btn" id="charLibCloseBtn">关闭</button></div>
     </div>
 </div>
 
@@ -267,18 +263,11 @@
         let pinned = false, dnd = false, nightMode = false;
         let bgColor = '#fcf5f9', bgOpacity = 0.92;
         let autoReply = true, letterInterval = 30;
-        let searchQuery = '';
         let editingTarget = 'my';
 
-        const DEFAULT_MESSAGES = [
-            { id: Date.now()+1, sender: LOVER_DEFAULT, word: '🌸 浅樱', meaning: '「春日初绽，是见到你时的心跳」', tag: '🌸 约定', time: new Date(Date.now()-3600000).toLocaleTimeString('zh-CN',{hour:'2-digit',minute:'2-digit'}), type: 'card' },
-            { id: Date.now()+2, sender: MY_DEFAULT, word: '🌙 月白', meaning: '「如月光般温柔，只为你一人明亮」', tag: '✨ 专属', time: new Date(Date.now()-1800000).toLocaleTimeString('zh-CN',{hour:'2-digit',minute:'2-digit'}), type: 'card' }
-        ];
-        const DEFAULT_LIBRARY = [
-            { word: '🌸 浅樱', meaning: '春日初绽', tag: '🌸' }, { word: '🌙 月白', meaning: '温柔如月', tag: '✨' },
-            { word: '🍃 风音', meaning: '林间私语', tag: '🍀' }, { word: '💫 星迹', meaning: '光年之约', tag: '🌠' },
-            { word: '😊 微笑', meaning: '(＾▽＾)', tag: '💕' }, { word: '🎵 音符', meaning: '♪(´▽｀)', tag: '🎶' }
-        ];
+        // 常用汉字库 (3500+ 常用汉字)
+        const COMMON_CHARS = '的一是在不了有和人这中大为上个国我以要他时来用们生到作地于出就分对成会可主发年动同工也能下过子说产种面而方后多定行学法所民得经十三之进着等部度家电力里如水化高自二理起小物现实加量都两体制机当使点从业本去把性好应开它合还因由其些然前外天政四日那社义事平形相全表间样与关各重新线内数正心反你明看原又么利比或但质气第向道命此变条只没结解问意建月公无系军很情者最立代想已通并提直题党程展五果料象员革位入常文总次品式活设及管特件长求老头基资边流路级少图山统接知较将组见计别她手角期根论运农指几九区强放决西被干做必战先回则任取据处队南给色光门即保治北造百规热领七海口东导器压志世金增争济阶油思术极交受联什认六共权收证改清己美再采转更单风切打白教速花带安场身车例真务具万每目至达走积示议声报斗完类八离华名确才科张信马节话米整空元况今集温传土许步群广石记需段研界拉林律叫且究观越织装影算低持音众书布复容儿须际商非验连断深难近矿千周委素技备半办青省列习响约支般史感劳便团往酸历市克何除消构府称太准精值号率族维划选标写存候毛亲快效斯院查江型眼王按格养易置派层片始却专状育厂京识适属圆包火住调满县局照参红细引听该铁价严龙飞';
+        const CHAR_LIB = COMMON_CHARS.split('');
 
         // ---------- 存储 ----------
         function loadData() {
@@ -293,9 +282,16 @@
                 if (cfg.letterInterval) letterInterval = cfg.letterInterval;
             } catch(e) {}
             try { const m = JSON.parse(localStorage.getItem('chat_messages_v4') || '[]'); if (m.length) messages = m; } catch(e) {}
-            if (!messages.length) messages = DEFAULT_MESSAGES.map(m => ({...m}));
+            if (!messages.length) messages = [
+                { id: Date.now()+1, sender: LOVER_DEFAULT, word: '🌸 浅樱', meaning: '「春日初绽，是见到你时的心跳」', tag: '🌸 约定', time: new Date(Date.now()-3600000).toLocaleTimeString('zh-CN',{hour:'2-digit',minute:'2-digit'}), type: 'card' },
+                { id: Date.now()+2, sender: MY_DEFAULT, word: '🌙 月白', meaning: '「如月光般温柔，只为你一人明亮」', tag: '✨ 专属', time: new Date(Date.now()-1800000).toLocaleTimeString('zh-CN',{hour:'2-digit',minute:'2-digit'}), type: 'card' }
+            ];
             try { const l = JSON.parse(localStorage.getItem('chat_library_v4') || '[]'); if (l.length) libraryCards = l; } catch(e) {}
-            if (!libraryCards.length) libraryCards = DEFAULT_LIBRARY.map(c => ({...c}));
+            if (!libraryCards.length) libraryCards = [
+                { word: '🌸 浅樱', meaning: '春日初绽', tag: '🌸' }, { word: '🌙 月白', meaning: '温柔如月', tag: '✨' },
+                { word: '🍃 风音', meaning: '林间私语', tag: '🍀' }, { word: '💫 星迹', meaning: '光年之约', tag: '🌠' },
+                { word: '😊 微笑', meaning: '(＾▽＾)', tag: '💕' }, { word: '🎵 音符', meaning: '♪(´▽｀)', tag: '🎶' }
+            ];
             saveAll();
         }
         function saveAll() {
@@ -321,9 +317,16 @@
         const batchInput = document.getElementById('batchInput'), batchConfirmBtn = document.getElementById('batchConfirmBtn');
         const batchCancelBtn = document.getElementById('batchCancelBtn'), batchTemplateBtn = document.getElementById('batchTemplateBtn');
         const shuffleBtn = document.getElementById('shuffleBtn');
+        const charLibBtn = document.getElementById('charLibBtn');
+        const charLibModal = document.getElementById('charLibModal');
+        const charGrid = document.getElementById('charGrid');
+        const customCharInput = document.getElementById('customCharInput');
+        const addCustomCharBtn = document.getElementById('addCustomCharBtn');
+        const charLibCloseBtn = document.getElementById('charLibCloseBtn');
         const myAvatarEl = document.getElementById('myAvatar'), loverAvatarEl = document.getElementById('loverAvatar');
         const myNameDisplay = document.getElementById('myNameDisplay'), chatStatus = document.getElementById('chatStatus');
         const chatModeDisplay = document.getElementById('chatModeDisplay'), pinStatus = document.getElementById('pinStatus'), dndStatus = document.getElementById('dndStatus');
+        const libCount = document.getElementById('libCount');
         const settingsBtn = document.getElementById('settingsBtn'), searchBtn = document.getElementById('searchBtn');
         const exportBtn = document.getElementById('exportBtn'), importBtn = document.getElementById('importBtn');
         const settingsModal = document.getElementById('settingsModal'), searchModal = document.getElementById('searchModal');
@@ -365,7 +368,7 @@
                         <div class="card-word">${msg.word||'💖'}</div>
                         ${msg.meaning ? `<div class="card-meaning">${msg.meaning}</div>` : ''}
                         <div class="timestamp">${msg.time}</div>
-                        <div class="msg-actions">
+                        <div class="msg-actions" style="display:flex;gap:4px;margin-top:4px;flex-wrap:wrap;">
                             <button class="btn btn-xs" onclick="window._replyMsg(${msg.id})">💬 回复</button>
                             <button class="btn btn-xs" onclick="window._pinMsg(${msg.id})">📌 ${msg.pinned?'取消置顶':'置顶'}</button>
                             ${msg.sender === myName ? `<button class="btn btn-xs btn-danger" onclick="window._recallMsg(${msg.id})">↩️ 撤回</button>` : ''}
@@ -403,6 +406,7 @@
                     if (!isNaN(idx) && libraryCards[idx]) { const c = libraryCards[idx]; sendCard(c.word, c.meaning||''); }
                 });
             });
+            libCount.textContent = `📚 ${libraryCards.length}张`;
         }
 
         function updateStatusUI() {
@@ -419,6 +423,7 @@
             document.getElementById('letterInterval').value = letterInterval;
             if (nightMode) document.body.classList.add('night'); else document.body.classList.remove('night');
             app.style.background = `rgba(${hexToRgb(bgColor)}, ${bgOpacity})`;
+            libCount.textContent = `📚 ${libraryCards.length}张`;
         }
 
         function hexToRgb(hex) { const r=parseInt(hex.slice(1,3),16), g=parseInt(hex.slice(3,5),16), b=parseInt(hex.slice(5,7),16); return `${r},${g},${b}`; }
@@ -435,7 +440,6 @@
             return true;
         }
 
-        // ---------- 模拟回复 ----------
         function simulateReply() {
             if (messages.length && messages[messages.length-1].sender === loverName) return;
             if (!libraryCards.length) {
@@ -449,7 +453,6 @@
             messages.push(reply); saveAll(); renderMessages();
         }
 
-        // ---------- 寄来信 ----------
         function sendLetter() {
             if (dnd) return;
             const letters = ['📮 今日来信：想你', '💌 一封情书', '🌸 樱花开了', '🌙 晚安', '☀️ 早安', '💫 想你了', '🍃 风在说话', '🎵 这首歌送给你'];
@@ -459,7 +462,6 @@
             toast('📮 收到一封来信');
         }
 
-        // ---------- 拼字卡 ----------
         function shuffleCard() {
             if (libraryCards.length < 2) { toast('⚠️ 至少需要2张字卡'); return; }
             const shuffled = [...libraryCards].sort(() => Math.random() - 0.5);
@@ -469,7 +471,6 @@
             sendCard(word, meaning || '✨ 随机组合', 'card', { tag: '🎲 拼字卡' });
         }
 
-        // ---------- 撤回 ----------
         function recallMsg(id) {
             const idx = messages.findIndex(m => m.id === id);
             if (idx === -1) return;
@@ -480,7 +481,6 @@
             toast('↩️ 已撤回消息');
         }
 
-        // ---------- 置顶 ----------
         function pinMsg(id) {
             const msg = messages.find(m => m.id === id);
             if (!msg) return;
@@ -489,58 +489,57 @@
             toast(msg.pinned ? '📌 已置顶' : '📌 取消置顶');
         }
 
-        // ---------- 搜索 ----------
-        function searchMessages(query) {
-            if (!query.trim()) { searchResults.innerHTML = '<div style="color:#b2829b;">输入关键词搜索</div>'; return; }
-            const results = messages.filter(m => m.word.includes(query) || (m.meaning && m.meaning.includes(query)));
-            if (!results.length) { searchResults.innerHTML = '<div style="color:#b2829b;">未找到结果</div>'; return; }
-            searchResults.innerHTML = results.map(m => `<div style="padding:4px 0;border-bottom:1px solid #f5d6e2;font-size:0.75rem;">${m.sender}: ${m.word} ${m.meaning||''} <span style="color:#b08599;font-size:0.6rem;">${m.time}</span></div>`).join('');
-        }
-
-        // ---------- 导出/导入 ----------
-        function exportData() {
-            const data = { messages, libraryCards, config: { myName, myAvatar, loverName, loverAvatar, pinned, dnd, nightMode, bgColor, bgOpacity, autoReply, letterInterval } };
-            const blob = new Blob([JSON.stringify(data, null, 2)], {type: 'application/json'});
-            const url = URL.createObjectURL(blob);
-            const a = document.createElement('a');
-            a.href = url; a.download = `字卡聊天室_${new Date().toISOString().slice(0,10)}.json`;
-            a.click(); URL.revokeObjectURL(url);
-            toast('📤 导出成功');
-        }
-        function importData(file) {
-            const reader = new FileReader();
-            reader.onload = function(e) {
-                try {
-                    const data = JSON.parse(e.target.result);
-                    if (data.messages) messages = data.messages;
-                    if (data.libraryCards) libraryCards = data.libraryCards;
-                    if (data.config) {
-                        if (data.config.myName) myName = data.config.myName;
-                        if (data.config.myAvatar) myAvatar = data.config.myAvatar;
-                        if (data.config.loverName) loverName = data.config.loverName;
-                        if (data.config.loverAvatar) loverAvatar = data.config.loverAvatar;
-                        if (data.config.pinned !== undefined) pinned = data.config.pinned;
-                        if (data.config.dnd !== undefined) dnd = data.config.dnd;
-                        if (data.config.nightMode !== undefined) nightMode = data.config.nightMode;
-                        if (data.config.bgColor) bgColor = data.config.bgColor;
-                        if (data.config.bgOpacity) bgOpacity = data.config.bgOpacity;
-                        if (data.config.autoReply !== undefined) autoReply = data.config.autoReply;
-                        if (data.config.letterInterval) letterInterval = data.config.letterInterval;
+        // ---------- 汉字库 (双方共享) ----------
+        function renderCharGrid() {
+            charGrid.innerHTML = '';
+            const displayed = CHAR_LIB.slice(0, 500);
+            displayed.forEach(char => {
+                const span = document.createElement('span');
+                span.textContent = char;
+                const exists = libraryCards.some(c => c.word === char);
+                if (exists) span.classList.add('added');
+                span.title = exists ? `"${char}" 已在字卡库中` : `添加 "${char}" 到字卡库 (双方共享)`;
+                span.addEventListener('click', function() {
+                    const word = this.textContent;
+                    if (libraryCards.some(c => c.word === word)) {
+                        toast(`⚠️ 「${word}」已在库中`);
+                        return;
                     }
-                    saveAll(); renderMessages(); renderLibrary(); updateStatusUI();
-                    toast('📥 导入成功');
-                } catch(err) { toast('⚠️ 导入失败: '+err.message); }
-            };
-            reader.readAsText(file);
+                    if (addToLibrary(word, `常用汉字「${word}」`, '🈶')) {
+                        toast(`✅ 已添加「${word}」`);
+                        renderCharGrid();
+                        renderLibrary();
+                    }
+                });
+                charGrid.appendChild(span);
+            });
         }
 
-        // ---------- 主动发消息 ----------
-        function autoSendMessage() {
-            if (dnd) return;
-            const msgs = ['✨ 今天天气真好', '🌸 想你', '💕 在干嘛呢', '🌟 刚刚看到一朵云', '🎵 这首歌好听', '🌙 晚安', '☀️ 早安', '🍃 风很温柔'];
-            const word = msgs[Math.floor(Math.random() * msgs.length)];
-            const msg = { id: genId()+1, sender: loverName, word, meaning: '💬 主动发来的消息', tag: '💬', time: getTime(), type: 'card' };
-            messages.push(msg); saveAll(); renderMessages();
+        function addToLibrary(word, meaning, tag) {
+            word = word.trim();
+            if (!word) return false;
+            if (libraryCards.some(c => c.word === word)) {
+                toast('⚠️ 该字卡已存在');
+                return false;
+            }
+            libraryCards.push({ word, meaning: (meaning || '').trim(), tag: (tag || '❤️').trim() });
+            saveAll();
+            renderLibrary();
+            return true;
+        }
+
+        function batchImport(text) {
+            const lines = text.split('\n').filter(l => l.trim());
+            if (!lines.length) { toast('⚠️ 没有内容'); return false; }
+            let added = 0;
+            lines.forEach(l => {
+                const p = l.split(/[|，,、\t]/).map(s => s.trim());
+                if (p.length >= 1) {
+                    if (addToLibrary(p[0], p.length > 1 ? p[1] : '', p.length > 2 ? p[2] : '❤️')) added++;
+                }
+            });
+            if (added > 0) { toast(`✅ 导入 ${added} 张`); renderLibrary(); return true; }
+            toast('⚠️ 格式错误'); return false;
         }
 
         // ---------- 事件绑定 ----------
@@ -564,8 +563,24 @@
             batchTemplateBtn.addEventListener('click', () => { batchInput.value='🌸 樱色 | 春日初绽 | 🌸\n🌙 月影 | 温柔如月 | ✨\n🍃 风语 | 林间细语 | 🍀'; toast('📋 已填入模板'); });
             batchConfirmBtn.addEventListener('click', () => { if (batchImport(batchInput.value)) { batchArea.style.display='none'; batchInput.value=''; } });
 
-            function addToLibrary(word, meaning, tag) { word=word.trim(); if(!word) return false; libraryCards.push({word, meaning:(meaning||'').trim(), tag:(tag||'❤️').trim()}); saveAll(); renderLibrary(); return true; }
-            function batchImport(text) { const lines=text.split('\n').filter(l=>l.trim()); if(!lines.length){toast('⚠️ 没有内容');return false;} let added=0; lines.forEach(l=>{const p=l.split(/[|，,、\t]/).map(s=>s.trim()); if(p.length>=1){if(addToLibrary(p[0], p.length>1?p[1]:'', p.length>2?p[2]:'❤️')) added++;}}); if(added>0){toast(`✅ 导入 ${added} 张`); renderLibrary(); return true;} toast('⚠️ 格式错误'); return false; }
+            // 汉字库 (双方共享)
+            charLibBtn.addEventListener('click', () => {
+                charLibModal.classList.add('active');
+                renderCharGrid();
+            });
+            charLibCloseBtn.addEventListener('click', () => charLibModal.classList.remove('active'));
+            charLibModal.addEventListener('click', e => { if (e.target === charLibModal) charLibModal.classList.remove('active'); });
+            addCustomCharBtn.addEventListener('click', () => {
+                const val = customCharInput.value.trim();
+                if (!val) { toast('⚠️ 请输入汉字或词'); return; }
+                if (addToLibrary(val, `自定义「${val}」`, '🈶')) {
+                    customCharInput.value = '';
+                    toast(`✅ 已添加「${val}」`);
+                    renderCharGrid();
+                    renderLibrary();
+                }
+            });
+            customCharInput.addEventListener('keydown', e => { if (e.key === 'Enter') addCustomCharBtn.click(); });
 
             // 设置
             settingsBtn.addEventListener('click', () => { updateStatusUI(); settingsModal.classList.add('active'); });
@@ -581,26 +596,66 @@
                 saveAll(); updateStatusUI(); renderMessages();
                 settingsModal.classList.remove('active');
                 toast('✅ 设置已保存');
-                if (autoReply && !window._letterTimer) { window._letterTimer = setInterval(() => { if (autoReply && !dnd) sendLetter(); }, letterInterval * 1000); }
+                if (autoReply && !window._letterTimer) { clearInterval(window._letterTimer); window._letterTimer = setInterval(() => { if (autoReply && !dnd) sendLetter(); }, letterInterval * 1000); }
             });
 
             // 搜索
             searchBtn.addEventListener('click', () => { searchModal.classList.add('active'); searchInput.value=''; searchResults.innerHTML=''; searchInput.focus(); });
             searchCloseBtn.addEventListener('click', () => searchModal.classList.remove('active'));
-            searchBtnConfirm.addEventListener('click', () => { searchMessages(searchInput.value); });
-            searchInput.addEventListener('keydown', e => { if(e.key==='Enter') searchMessages(searchInput.value); });
+            searchBtnConfirm.addEventListener('click', () => { const q = searchInput.value.trim(); if (!q) { searchResults.innerHTML = '<div style="color:#b2829b;">输入关键词搜索</div>'; return; } const results = messages.filter(m => m.word.includes(q) || (m.meaning && m.meaning.includes(q))); if (!results.length) { searchResults.innerHTML = '<div style="color:#b2829b;">未找到结果</div>'; return; } searchResults.innerHTML = results.map(m => `<div style="padding:4px 0;border-bottom:1px solid #f5d6e2;font-size:0.75rem;">${m.sender}: ${m.word} ${m.meaning||''} <span style="color:#b08599;font-size:0.6rem;">${m.time}</span></div>`).join(''); });
+            searchInput.addEventListener('keydown', e => { if(e.key==='Enter') searchBtnConfirm.click(); });
 
             // 导出/导入
-            exportBtn.addEventListener('click', exportData);
-            importBtn.addEventListener('click', () => { const input=document.createElement('input'); input.type='file'; input.accept='.json'; input.onchange=(e)=>{if(e.target.files[0]) importData(e.target.files[0]);}; input.click(); });
+            exportBtn.addEventListener('click', () => {
+                const data = { messages, libraryCards, config: { myName, myAvatar, loverName, loverAvatar, pinned, dnd, nightMode, bgColor, bgOpacity, autoReply, letterInterval } };
+                const blob = new Blob([JSON.stringify(data, null, 2)], {type: 'application/json'});
+                const url = URL.createObjectURL(blob);
+                const a = document.createElement('a');
+                a.href = url; a.download = `字卡聊天室_${new Date().toISOString().slice(0,10)}.json`;
+                a.click(); URL.revokeObjectURL(url);
+                toast('📤 导出成功');
+            });
+            importBtn.addEventListener('click', () => {
+                const input = document.createElement('input');
+                input.type = 'file';
+                input.accept = '.json';
+                input.onchange = (e) => {
+                    if (!e.target.files[0]) return;
+                    const reader = new FileReader();
+                    reader.onload = function(ev) {
+                        try {
+                            const data = JSON.parse(ev.target.result);
+                            if (data.messages) messages = data.messages;
+                            if (data.libraryCards) libraryCards = data.libraryCards;
+                            if (data.config) {
+                                if (data.config.myName) myName = data.config.myName;
+                                if (data.config.myAvatar) myAvatar = data.config.myAvatar;
+                                if (data.config.loverName) loverName = data.config.loverName;
+                                if (data.config.loverAvatar) loverAvatar = data.config.loverAvatar;
+                                if (data.config.pinned !== undefined) pinned = data.config.pinned;
+                                if (data.config.dnd !== undefined) dnd = data.config.dnd;
+                                if (data.config.nightMode !== undefined) nightMode = data.config.nightMode;
+                                if (data.config.bgColor) bgColor = data.config.bgColor;
+                                if (data.config.bgOpacity) bgOpacity = data.config.bgOpacity;
+                                if (data.config.autoReply !== undefined) autoReply = data.config.autoReply;
+                                if (data.config.letterInterval) letterInterval = data.config.letterInterval;
+                            }
+                            saveAll(); renderMessages(); renderLibrary(); updateStatusUI();
+                            toast('📥 导入成功');
+                        } catch(err) { toast('⚠️ 导入失败: '+err.message); }
+                    };
+                    reader.readAsText(e.target.files[0]);
+                };
+                input.click();
+            });
 
             // 全局函数
-            window._replyMsg = (id) => { const msg=messages.find(m=>m.id===id); if(msg) { wordInput.value=msg.word; meaningInput.value=msg.meaning||''; wordInput.focus(); } };
+            window._replyMsg = (id) => { const msg = messages.find(m => m.id === id); if(msg) { wordInput.value = msg.word; meaningInput.value = msg.meaning||''; wordInput.focus(); } };
             window._pinMsg = pinMsg;
             window._recallMsg = recallMsg;
 
             // 编辑弹窗
-            const emojis=['🧸','🌸','🌙','⭐','💖','🌈','🦋','🍀','🌊','🎀','✨','🌺','🌻','🎵','💫','🪐','☀️','🐱','🐶','🐰','🦊','🐼','🐨','🦄','🍭'];
+            const emojis = ['🧸','🌸','🌙','⭐','💖','🌈','🦋','🍀','🌊','🎀','✨','🌺','🌻','🎵','💫','🪐','☀️','🐱','🐶','🐰','🦊','🐼','🐨','🦄','🍭'];
             emojiGrid.innerHTML = emojis.map(e => `<span>${e}</span>`).join('');
             emojiGrid.addEventListener('click', function(e) { if(e.target.tagName==='SPAN') { this.querySelectorAll('span').forEach(el=>el.classList.remove('selected')); e.target.classList.add('selected'); } });
             document.querySelector('.chat-header .info').addEventListener('dblclick', () => { chatMode = chatMode==='private'?'group':'private'; saveAll(); updateStatusUI(); toast(chatMode==='private'?'💕 私聊':'👥 群聊'); });
@@ -628,19 +683,24 @@
                 saveAll(); renderMessages(); renderLibrary(); updateStatusUI(); editModal.classList.remove('active'); toast('✅ 已更新');
             }
 
-            // 自动回复和来信
+            // 自动来信
             if (autoReply && !window._letterTimer) {
+                clearInterval(window._letterTimer);
                 window._letterTimer = setInterval(() => { if (autoReply && !dnd) sendLetter(); }, letterInterval * 1000);
             }
-            // 主动发消息（每15-30秒随机）
             if (!window._autoSendTimer) {
                 window._autoSendTimer = setInterval(() => {
-                    if (autoReply && !dnd && Math.random() < 0.3) autoSendMessage();
+                    if (autoReply && !dnd && Math.random() < 0.25) {
+                        const msgs = ['✨ 今天天气真好', '🌸 想你', '💕 在干嘛呢', '🌟 刚刚看到一朵云', '🎵 这首歌好听', '🌙 晚安', '☀️ 早安', '🍃 风很温柔'];
+                        const word = msgs[Math.floor(Math.random() * msgs.length)];
+                        const msg = { id: genId()+1, sender: loverName, word, meaning: '💬 主动发来的消息', tag: '💬', time: getTime(), type: 'card' };
+                        messages.push(msg); saveAll(); renderMessages();
+                    }
                 }, 15000 + Math.random() * 15000);
             }
 
-            console.log('💌 字卡聊天室 v6 已启动');
-            console.log('⚙️ 支持背景/夜间/置顶/免打扰/搜索/导入导出/撤回/拼字卡');
+            console.log('💌 字卡聊天室 v8 已启动');
+            console.log('🈶 汉字库双方共享，你添加的字卡爱人也随时可用');
         }
 
         if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', init);
